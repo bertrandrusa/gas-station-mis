@@ -1,0 +1,161 @@
+/* StationDesk design-engineering polish, guided by emilkowalski/skills.
+   Keep the supplied fuel-pump Lottie as the only decorative animation.
+   All interaction feedback below is instantaneous (no extra motion). */
+
+/* Shared typography and interaction foundations */
+:root {
+  font-family:"PTRootUI",-apple-system,BlinkMacSystemFont,"Segoe UI",Ubuntu,Roboto,Arial,sans-serif;
+  font-variant-numeric:tabular-nums;
+  text-rendering:optimizeLegibility;
+}
+html { scroll-behavior:auto; }
+button, a, select, [role="button"] { touch-action:manipulation; }
+button { -webkit-user-select:none; user-select:none; -webkit-tap-highlight-color:transparent; }
+a, select { -webkit-tap-highlight-color:transparent; }
+button, .workspace-shell button, .station-portal button {
+  transition:none !important;
+  animation:none !important;
+}
+button:disabled { cursor:not-allowed; }
+button:focus-visible, a:focus-visible, select:focus-visible,
+input:focus-visible, textarea:focus-visible, [tabindex="0"]:focus-visible {
+  outline:2px solid #2563eb;
+  outline-offset:3px;
+}
+
+/* A quieter, clearer Appsmith-like operations workspace */
+.workspace-shell .main-area { min-width:0; min-height:100vh; min-height:100dvh; }
+.workspace-shell .content { min-width:0; }
+.workspace-shell .page-heading h1 { letter-spacing:-.025em; line-height:1.2; }
+.workspace-shell .page-heading p { font-size:13px; }
+.workspace-shell .card { box-shadow:0 1px 2px rgba(22,40,70,.035); }
+.workspace-shell .card-header h2,
+.workspace-shell .enterprise-section-heading h2 { letter-spacing:-.01em; }
+.workspace-shell .kpi-value,.workspace-shell .review-amount {
+  font-feature-settings:"tnum" 1;
+  overflow-wrap:anywhere;
+}
+.workspace-shell .kpi-foot,.workspace-shell .page-heading p { overflow-wrap:anywhere; }
+.workspace-shell .side-site b,.workspace-shell .side-profile,
+.workspace-shell .list-main,.workspace-shell .team-member > div { min-width:0; }
+.workspace-shell .side-profile b,.workspace-shell .side-profile small,
+.workspace-shell .team-member h3,.workspace-shell .team-member p {
+  overflow-wrap:anywhere;
+}
+.workspace-shell .nav-item { min-width:0; text-align:left; }
+.workspace-shell .nav-item .nav-count { flex:0 0 auto; }
+.workspace-shell .data-table td { font-variant-numeric:tabular-nums; }
+.workspace-shell .table-wrap {
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  scrollbar-color:#bac8d8 transparent;
+}
+.workspace-shell .table-wrap:focus-visible { outline-offset:-3px; }
+.workspace-shell .review-head { gap:10px; flex-wrap:wrap; }
+.workspace-shell .review-actions { flex-wrap:wrap; }
+.workspace-shell .review-actions .btn { flex:1 1 100px; }
+.workspace-shell .alert-card .list-main small,
+.workspace-shell .info-card,.workspace-shell .kv b { overflow-wrap:anywhere; }
+.workspace-shell .kv { align-items:baseline; }
+.workspace-shell .kv b { text-align:right; min-width:0; }
+.workspace-shell .kpi-grid { align-items:stretch; }
+.workspace-shell .btn:active:not(:disabled),
+.workspace-shell .filter-btn:active:not(:disabled),
+.workspace-shell .nav-item:active { filter:brightness(.96); }
+.workspace-shell .mobile-bar button:active { background:#eff6ff; }
+.workspace-shell .mobile-bar button:focus-visible { outline-offset:-2px; }
+
+/* Crisp, consistent modal / toast layers */
+.modal-panel { overscroll-behavior:contain; }
+.modal-panel .kv b { overflow-wrap:anywhere; }
+.modal-panel .btn:active:not(:disabled) { filter:brightness(.96); }
+.modal-close { min-width:34px; min-height:34px; }
+.toast { line-height:1.5; overflow-wrap:anywhere; }
+.toast .btn { margin-left:10px; }
+
+/* Selected premium landing page: preserve copy and exact uploaded Lottie. */
+.station-portal .login-message h1 {
+  font-family:"PTRootUI",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:clamp(38px,4vw,58px);
+  line-height:1.12;
+  letter-spacing:-.03em;
+}
+.station-portal .login-message .eyebrow { font-weight:600; }
+.station-portal .login-message p { font-size:14px; line-height:1.65; }
+.station-portal .fuel-demo { width:min(100%,460px); }
+.station-portal .auth-card { max-width:452px; }
+.station-portal .auth-card .subcopy { font-size:13px; }
+.station-portal .auth-card .btn.wide:active {
+  background:#1e40af; border-color:#1e40af; box-shadow:none;
+}
+.station-portal .login-password .password-toggle { min-height:34px; }
+.station-portal .auth-hint code { overflow-wrap:anywhere; }
+
+/* Tablet and phone: useful touch targets, no accidental page zoom or clipping. */
+@media (max-width:810px) {
+  .station-portal .fuel-demo { width:min(100%,350px); }
+  .station-portal .login-message h1 { font-size:clamp(34px,6.2vw,44px); }
+  .station-portal .login-hero { padding-top:max(25px,env(safe-area-inset-top)); }
+  .station-portal .login-form-side { padding-bottom:max(32px,env(safe-area-inset-bottom)); }
+}
+@media (max-width:760px) {
+  .workspace-shell .topbar { padding-left:max(15px,env(safe-area-inset-left)); padding-right:max(15px,env(safe-area-inset-right)); }
+  .workspace-shell .content { padding-bottom:26px; }
+  .workspace-shell .mobile-bar {
+    gap:3px;
+    justify-content:flex-start;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+    padding:7px max(6px,env(safe-area-inset-left)) max(8px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-right));
+  }
+  .workspace-shell .mobile-bar::-webkit-scrollbar { display:none; }
+  .workspace-shell .mobile-bar button {
+    flex:1 0 72px;
+    min-height:45px;
+    white-space:normal;
+    line-height:1.25;
+    border-radius:5px;
+  }
+  .workspace-shell .page-heading { flex-wrap:wrap; }
+  .workspace-shell .page-actions { width:100%; }
+  .workspace-shell .page-actions .btn { max-width:100%; }
+  .workspace-shell .data-table { min-width:690px; }
+}
+@media (max-width:450px) {
+  .station-portal .fuel-demo { width:min(100%,315px); }
+  .station-portal .login-message h1 { font-size:34px; }
+  .station-portal .auth-card { padding:25px 21px; }
+  .workspace-shell .kpi-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .workspace-shell .kpi { min-width:0; padding:11px; }
+  .workspace-shell .kpi-value { font-size:clamp(16px,5vw,21px); }
+  .workspace-shell .page-heading h1 { font-size:22px; }
+}
+@media (max-width:350px) {
+  .workspace-shell .kpi-grid { grid-template-columns:1fr; }
+  .workspace-shell .kpi-icon { display:grid; }
+}
+@media (pointer:coarse) {
+  .station-portal input, .station-portal select, .station-portal textarea,
+  .workspace-shell input, .workspace-shell select, .workspace-shell textarea,
+  .modal-panel input, .modal-panel select, .modal-panel textarea {
+    font-size:16px !important;
+  }
+  .station-portal .password-toggle { min-height:44px; }
+  .workspace-shell .filter-btn { min-height:36px; }
+  .workspace-shell .mini-link { min-height:36px; padding:7px; }
+  .workspace-shell .mobile-bar button:active,
+  .workspace-shell .nav-item:active,
+  .workspace-shell .btn:active:not(:disabled) { background-color:#dbeafe; }
+  .station-portal .auth-card .btn.wide:active { background:#1e40af; }
+}
+@media (prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    scroll-behavior:auto !important;
+    transition-duration:0s !important;
+    animation-duration:0s !important;
+  }
+}
