@@ -1,0 +1,50 @@
+name: Publish public MIS demo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "frontend-demo/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check JavaScript and demo tests
+        run: |
+          node --check frontend-demo/app.js
+          node --test frontend-demo/tests/*.test.js
+      - name: Check static assets
+        run: |
+          test -s frontend-demo/index.html
+          test -s frontend-demo/styles.css
+          grep -q 'src="./app.js"' frontend-demo/index.html
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend-demo
+      - id: deployment
+        uses: actions/deploy-pages@v4
