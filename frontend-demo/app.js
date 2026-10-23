@@ -78,10 +78,10 @@ function loginView() {
         <button type="button" class="fuel-demo ${state.pumpFilled?"is-fueled":""}" data-action="pump-demo" aria-pressed="${state.pumpFilled}" aria-label="Run simulated fuel pump animation; no physical pumps are connected">
   <span class="pump-illustration" aria-hidden="true"><span id="pump-lottie-canvas" class="lottie-canvas"></span><span class="pump-fallback" hidden>⛽</span></span>
   <span class="pump-content">
-    <span class="pump-ui"><strong>Animated fuel pump (Lottie)</strong><span class="pump-percent" data-pump-level>${state.pumpFilled?"86%":"18%"}</span></span>
+    <span class="pump-ui"><strong>Fuel pump animation</strong><span class="pump-percent" data-pump-level>${state.pumpFilled?"86%":"18%"}</span></span>
     <span class="pump-meter" role="progressbar" aria-label="Simulated fuel gauge" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${state.pumpFilled?86:18}"><span class="pump-meter-fill"></span></span>
-    <span class="pump-instruction" data-pump-label>${state.pumpFilled?"Simulation complete · tap to reset":"Tap to play the pump animation"}</span>
-    <span class="pump-visual-caption">Locally hosted Lottie · visual demo only</span>
+    <span class="pump-instruction" data-pump-label>${state.pumpFilled?"Simulation complete · tap to reset":"Tap to play the fuel-pump animation"}</span>
+    <span class="pump-visual-caption">Uploaded fuel-pump animation · demo only</span>
   </span>
 </button>
       </div>
@@ -186,22 +186,26 @@ function modalView() {
 
 
 let pumpLottie=null;
+let pumpPlaying=false;
 
 function updatePumpControl(button){
   if(!button)return;
   button.classList.toggle("is-fueled",state.pumpFilled);
+  button.classList.toggle("is-playing",pumpPlaying);
   button.setAttribute("aria-pressed",String(state.pumpFilled));
+  button.setAttribute("aria-busy",String(pumpPlaying));
   const meter=button.querySelector('[role="progressbar"]');
-  if(meter)meter.setAttribute("aria-valuenow",String(state.pumpFilled?86:18));
+  if(meter)meter.setAttribute("aria-valuenow",String(state.pumpFilled && !pumpPlaying?86:18));
   const value=button.querySelector("[data-pump-level]");
-  if(value)value.textContent=state.pumpFilled?"86%":"18%";
+  if(value)value.textContent=pumpPlaying?"Filling…":state.pumpFilled?"86%":"18%";
   const caption=button.querySelector("[data-pump-label]");
-  if(caption)caption.textContent=state.pumpFilled?"Animation played · tap to reset":"Tap to play the pump animation";
+  if(caption)caption.textContent=pumpPlaying?"Refueling simulation in progress":state.pumpFilled?"Animation complete · tap to reset":"Tap to play the fuel-pump animation";
 }
 function initializePumpLottie(){
   const node=document.getElementById("pump-lottie-canvas");
   if(!node)return;
   if(pumpLottie){pumpLottie.destroy();pumpLottie=null;}
+  pumpPlaying=false;
   if(typeof window.lottie?.loadAnimation!=="function"){
     node.closest(".pump-illustration")?.querySelector(".pump-fallback")?.removeAttribute("hidden");
     const label=document.querySelector(".fuel-demo [data-pump-label]");
@@ -210,27 +214,40 @@ function initializePumpLottie(){
   }
   const instance=window.lottie.loadAnimation({
     container:node, renderer:"svg", loop:false, autoplay:false,
-    path:"./fuel-pump-lottie.json", rendererSettings:{preserveAspectRatio:"xMidYMid meet"}
+    path:"./fuel-pump-lottie.json",
+    rendererSettings:{preserveAspectRatio:"xMidYMid meet"}
   });
   pumpLottie=instance;
   instance.addEventListener("DOMLoaded",()=>{
     if(!node.isConnected)return;
-    if(state.pumpFilled){
-      instance.goToAndStop(Math.max(0,instance.totalFrames-1),true);
-    }else{instance.goToAndStop(0,true);}
-  });
-  instance.addEventListener("data_failed",()=>{
-    if(node.isConnected){
-      node.closest(".pump-illustration")?.querySelector(".pump-fallback")?.removeAttribute("hidden");
-      const label=document.querySelector(".fuel-demo [data-pump-label]");
-      if(label)label.textContent="Lottie animation could not load";
+    // Crop the uploaded 1920x1080 artboard to the actual illustrated pump.
+    // Retains the original artwork and animation keyframes, but makes it legible.
+    const svg=node.querySelector("svg");
+    if(svg){
+      svg.setAttribute("viewBox","430 60 950 1000");
+      svg.setAttribute("preserveAspectRatio","xMidYMid meet");
     }
+    instance.goToAndStop(state.pumpFilled ? Math.max(0,instance.totalFrames-1) : 38,true);
   });
+  instance.addEventListener("complete",()=>{
+    if(!node.isConnected)return;
+    pumpPlaying=false;
+    updatePumpControl(document.querySelector('[data-action="pump-demo"]'));
+  });
+  const showFailure=()=>{
+    if(!node.isConnected)return;
+    node.closest(".pump-illustration")?.querySelector(".pump-fallback")?.removeAttribute("hidden");
+    const label=document.querySelector(".fuel-demo [data-pump-label]");
+    if(label)label.textContent="Animation could not load";
+  };
+  instance.addEventListener("data_failed",showFailure);
+  instance.addEventListener("error",showFailure);
 }
 
 function render() {
   const app=document.getElementById("app");
   if(!state.user){app.innerHTML=loginView();initializePumpLottie();return;}
+  if(pumpLottie){pumpLottie.destroy();pumpLottie=null;pumpPlaying=false;}
   const tabs={overview:overviewView,reports:reportsView,approvals:approvalsView,alerts:alertsView,team:teamView,settings:aboutView};
   const view=(tabs[state.tab]||overviewView)();
   const menu=navItems().map(([id,symbol,label])=>`<button type="button" class="${state.tab===id?"active":""}" data-action="navigate" data-tab="${id}" ${state.tab===id?'aria-current="page"':""}><span>${uiIcon(symbol)}</span>${esc(label)}</button>`).join("");
@@ -248,16 +265,22 @@ function actions(event) {
   if(action==="pump-demo"){
     if(!pumpLottie || !pumpLottie.isLoaded){
       const caption=button.querySelector("[data-pump-label]");
-      if(caption)caption.textContent="Animation is loading · tap again shortly";
+      if(caption)caption.textContent="Animation is loading";
       return;
     }
-    state.pumpFilled=!state.pumpFilled;
     if(state.pumpFilled){
-      pumpLottie.goToAndStop(0,true);
+      state.pumpFilled=false; pumpPlaying=false;
+      pumpLottie.goToAndStop(38,true);
+    }else{
+      state.pumpFilled=true;
       if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+        pumpPlaying=false;
         pumpLottie.goToAndStop(Math.max(0,pumpLottie.totalFrames-1),true);
-      }else{ pumpLottie.play(); }
-    }else{pumpLottie.goToAndStop(0,true);}
+      }else{
+        pumpPlaying=true;
+        pumpLottie.goToAndPlay(0,true);
+      }
+    }
     updatePumpControl(button);
     return;
   }
@@ -336,14 +359,14 @@ function start() {
   app.addEventListener("pointerover",event=>{
     if(state.user||state.pumpFilled||!pumpLottie?.isLoaded||event.pointerType!=="mouse")return;
     const button=event.target.closest('[data-action="pump-demo"]');
-    if(button&&!button.contains(event.relatedTarget)&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
-      pumpLottie.playSegments([0,14],true);
+    if(button&&!pumpPlaying&&!button.contains(event.relatedTarget)&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+      pumpLottie.playSegments([38,58],true);
     }
   });
   app.addEventListener("pointerout",event=>{
     if(state.user||state.pumpFilled||!pumpLottie?.isLoaded||event.pointerType!=="mouse")return;
     const button=event.target.closest('[data-action="pump-demo"]');
-    if(button&&!button.contains(event.relatedTarget))pumpLottie.goToAndStop(0,true);
+    if(button&&!pumpPlaying&&!button.contains(event.relatedTarget))pumpLottie.goToAndStop(38,true);
   });
   app.addEventListener("input",event=>{
     if(event.target.id!=="report-search")return;

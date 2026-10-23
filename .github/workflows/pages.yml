@@ -27,9 +27,9 @@ jobs:
           node-version: "22"
       - name: Check JavaScript and demo tests
         run: |
-          node --check frontend-demo/vendor/lottie-light.min.js
+          node --check frontend-demo/vendor/lottie.min.js
           node --check frontend-demo/app.js
-          node -e "const a=require('./frontend-demo/fuel-pump-lottie.json');if(!Array.isArray(a.layers)||a.layers.length<4||!a.fr||a.op<=a.ip)process.exit(1)"
+          node -e "const a=require('./frontend-demo/fuel-pump-lottie.json');if(a.nm!=='Gas_station_Final_Comp'||!a.fr||a.op<=a.ip||!a.assets?.length||!a.layers?.length)process.exit(1)"
           node --test frontend-demo/tests/*.test.js
       - name: Check static assets
         run: |
@@ -39,9 +39,10 @@ jobs:
           test -s frontend-demo/login-portal.css
           test -s frontend-demo/forecourt-scene.svg
           test -s frontend-demo/fuel-pump-lottie.json
-          test -s frontend-demo/vendor/lottie-light.min.js
+          test -s frontend-demo/vendor/lottie.min.js
+          test -s frontend-demo/fuel-pump-original.json
           test -s frontend-demo/vendor/LOTTIE_LICENSE.md
-          grep -q 'src="./vendor/lottie-light.min.js"' frontend-demo/index.html
+          grep -q 'src="./vendor/lottie.min.js"' frontend-demo/index.html
           grep -q 'loadAnimation' frontend-demo/app.js
           grep -q 'href="./login-portal.css"' frontend-demo/index.html
           grep -q 'data-action="pump-demo"' frontend-demo/app.js

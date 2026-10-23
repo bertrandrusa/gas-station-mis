@@ -198,9 +198,9 @@
 .station-portal .fuel-demo {
   margin-top:31px;
   width:min(100%,417px);
-  min-height:114px;
+  min-height:144px;
   position:relative;
-  display:grid;grid-template-columns:81px 1fr;align-items:center;gap:15px;
+  display:grid;grid-template-columns:104px 1fr;align-items:center;gap:16px;
   padding:13px 17px;
   border:1px solid #9bc3eb6e;
   border-radius:12px;
@@ -212,13 +212,13 @@
 }
 .station-portal .fuel-demo:focus-visible{outline:2px solid #d8eaff;outline-offset:4px}
 .station-portal .fuel-demo:hover{background:linear-gradient(135deg,#143758ec,#1c4f7fcb);border-color:#a1d0f2a3}
-.station-portal .pump-illustration{display:grid;place-items:center;height:93px;width:79px;position:relative}
-.station-portal .pump-illustration svg{width:76px;height:92px;overflow:visible}
+.station-portal .pump-illustration{display:grid;place-items:center;height:124px;width:102px;position:relative}
+.station-portal .pump-illustration svg{width:100%;height:100%;overflow:hidden}
 .station-portal .lottie-canvas{
-  display:block;width:100%;height:100%;min-height:88px;
+  display:block;width:100%;height:100%;min-height:0;
   overflow:hidden;pointer-events:none;
 }
-.station-portal .lottie-canvas svg{width:100%!important;height:100%!important;display:block;overflow:visible}
+.station-portal .lottie-canvas svg{width:100%!important;height:100%!important;display:block;overflow:hidden}
 .station-portal .pump-fallback{font-size:48px;line-height:1}
 .station-portal .pump-fallback[hidden]{display:none}
 .station-portal .pump-ui{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
@@ -236,9 +236,10 @@
   display:block;height:100%;width:18%;
   background:linear-gradient(90deg,#67b1ff,#c1ecff);
   border-radius:inherit;
-  transition:width 1150ms cubic-bezier(.18,.68,.32,1);
+  transition:width 5500ms cubic-bezier(.18,.68,.32,1);
 }
 .station-portal .fuel-demo.is-fueled .pump-meter-fill{width:86%}
+.station-portal .fuel-demo.is-playing .pump-instruction{color:#b7d9ff}
 .station-portal .pump-instruction{
   display:block;margin-top:9px;
   font-size:10px;color:#cfdef0;line-height:1.4;
@@ -276,9 +277,9 @@
  .station-portal .login-message .eyebrow{font-size:9px;letter-spacing:.10em;margin-bottom:12px}
  .station-portal .login-message h1{font-size:33px}
  .station-portal .login-message p{font-size:12px}
- .station-portal .fuel-demo{min-height:88px;margin-top:15px;grid-template-columns:60px 1fr;padding:9px 12px;gap:10px}
- .station-portal .pump-illustration{width:60px;height:70px}
- .station-portal .pump-illustration svg{width:56px;height:70px}
+ .station-portal .fuel-demo{min-height:102px;margin-top:15px;grid-template-columns:74px 1fr;padding:9px 12px;gap:10px}
+ .station-portal .pump-illustration{width:73px;height:85px}
+ .station-portal .pump-illustration svg{width:100%;height:100%}
  .station-portal .pump-ui strong{font-size:11px}
  .station-portal .pump-instruction{font-size:9px}
  .station-portal .login-form-side{padding:16px 13px 25px}
