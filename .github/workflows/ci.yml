@@ -21,5 +21,10 @@ jobs:
         run: |
           python -m compileall -q gas_station_mis
           python -m unittest discover -s gas_station_mis/tests -p "test_*.py" -v
+      - name: Verify public StationDesk frontend
+        run: |
+          node --check frontend-demo/app.js
+          node --check frontend-demo/core.js
+          node --test frontend-demo/tests/*.test.js
       - name: Verify client JavaScript syntax
         run: find gas_station_mis/gas_station_mis -name '*.js' -print0 | xargs -0 -r -n1 node --check
