@@ -32,7 +32,7 @@ StationDesk is an independent static HTML/CSS/JavaScript demonstration inspired 
 
 The UI follows the documented ADS conventions, including:
 
-- System typography (SF Pro / Segoe UI / Ubuntu according to operating system, with PT Root UI only if already installed) and 12–14px application text
+- System typography in the dashboard (SF Pro / Segoe UI / Ubuntu fallbacks according to operating system), plus actual self-hosted Appsmith PT Root UI typography on the login page
 - Base spacing scale of 2, 4, 8, 12, 16, 20 and 24px
 - 36px medium and 24px small buttons; primary / secondary / tertiary treatments, 6px rounding
 - 36px medium input and select controls with readable labels, focus outlines and neutral borders
@@ -48,7 +48,7 @@ Official public design-system references:
 - https://github.com/appsmithorg/design-system/blob/release/packages/design-system/src/Input/Input.styles.tsx
 - https://github.com/appsmithorg/design-system/blob/release/packages/design-system/src/__theme__/default/colors.css
 
-Appsmith's newer typography theme imports PT Root UI, but this demo **does not bundle or redistribute font files**; it uses a resilient system-font fallback.
+Appsmith's newer design-system typography imports **PT Root UI**. The StationDesk login now loads the **actual PT Root UI VF** typeface through a locally hosted WOFF2 file, sourced from the original publisher [Paratype](https://github.com/paratype-fonts/free/tree/master/PT-Root-UI-VF). It is permitted under the **SIL Open Font License 1.1**; the license is included at `fonts/OFL.txt`. The rest of the application retains system-font fallbacks. No Appsmith branding or design assets are redistributed.
 
 ## Corporate color palette
 

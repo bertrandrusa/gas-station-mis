@@ -1,6 +1,7 @@
 /* StationDesk: ADS-inspired component system — adapted from documented
    Appsmith design-system tokens. Not an Appsmith application or affiliated.
-   Uses OS system font stack; does not ship or redistribute font files. */
+   Uses OS system font stack for the dashboard; the login page self-hosts
+   Appsmith-style PT Root UI under its own SIL OFL license. */
 :root{
   --ds-primary:#2563eb;--ds-primary-hover:#1d4ed8;--ds-primary-active:#1e40af;
   --ds-text:#202939;--ds-subtle:#6a7585;--ds-muted:#99a4b3;

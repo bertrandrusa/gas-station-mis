@@ -38,6 +38,10 @@ jobs:
           test -s frontend-demo/workspace.css
           test -s frontend-demo/login-portal.css
           test -s frontend-demo/forecourt-scene.svg
+          test -s frontend-demo/fonts/pt-root-ui-vf.woff2
+          test -s frontend-demo/fonts/OFL.txt
+          grep -q 'href="./fonts/pt-root-ui-vf.woff2"' frontend-demo/index.html
+          grep -q 'font-family:"PTRootUI"' frontend-demo/login-portal.css
           test -s frontend-demo/fuel-pump-lottie.json
           test -s frontend-demo/vendor/lottie.min.js
           test -s frontend-demo/fuel-pump-original.json

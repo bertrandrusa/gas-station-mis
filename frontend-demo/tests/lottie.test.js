@@ -50,7 +50,13 @@ test("hero typography matches the enterprise workspace font without changing pum
   const css=fs.readFileSync(path.join(root,"login-portal.css"),"utf8");
   const workspace=fs.readFileSync(path.join(root,"workspace.css"),"utf8");
   assert.match(workspace,/font-family:"PT Root UI",-apple-system/);
-  assert.match(css,/font-family:"PT Root UI",-apple-system/);
+  assert.match(css,/font-family:"PTRootUI",-apple-system/);
+  assert.match(css,/@font-face/);
+  assert.match(css,/pt-root-ui-vf\.woff2/);
+  const font=fs.readFileSync(path.join(root,"fonts/pt-root-ui-vf.woff2"));
+  assert.equal(font.subarray(0,4).toString("ascii"),"wOF2");
+  assert.ok(font.length>50000);
+  assert.match(fs.readFileSync(path.join(root,"fonts/OFL.txt"),"utf8"),/SIL OPEN FONT LICENSE/);
   assert.match(css,/\.station-portal \.login-message \.eyebrow[\s\S]*?text-transform:none/);
   assert.match(css,/\.station-portal \.login-message h1[\s\S]*?font-weight:650/);
   assert.match(css,/\.station-portal \.login-message p[\s\S]*?font-size:14px/);
