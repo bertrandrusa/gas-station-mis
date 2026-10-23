@@ -134,7 +134,7 @@ function overviewView() {
   return `${sectionTitle("Workspace overview","Station: "+stationName(state.station)+" · "+new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}),state.user.role==="employee"?'<button class="btn" data-action="new-report">${icon("plus")} New shift report</button>':'<button class="btn secondary" data-action="navigate" data-tab="approvals">Review pending approvals →</button>')}
    <div class="kpi-grid">${card1}${card2}${card3}${card4}</div>
    <div class="enterprise-section-heading"><div><h2>Recent activity</h2><p>Shift records from the selected station</p></div><span class="section-caption">▤ &nbsp;DATA TABLE</span></div>
-   <section class="card table-card"><div class="card-header tight"><div><h2>Shift reports <span class="widget-count">${rs.length}</span></h2><p>Latest records, with review status</p></div><button class="mini-link" data-action="navigate" data-tab="reports">Open table ↗</button></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Report</th><th>Shift</th><th>Submitted by</th><th>Date</th><th>Total sales</th><th>Status</th><th></th></tr></thead><tbody>${reports||'<tr><td colspan="7">No reports</td></tr>'}</tbody></table></div></section>
+   <section class="card table-card"><div class="card-header tight"><div><h2>Shift reports <span class="widget-count">${rs.length}</span></h2><p>Latest records, with review status</p></div><button class="mini-link" data-action="navigate" data-tab="reports">Open table ↗</button></div><div class="table-wrap" role="region" tabindex="0" aria-label="Scrollable shift reports table"><table class="data-table"><thead><tr><th>Report</th><th>Shift</th><th>Submitted by</th><th>Date</th><th>Total sales</th><th>Status</th><th></th></tr></thead><tbody>${reports||'<tr><td colspan="7">No reports</td></tr>'}</tbody></table></div></section>
    <div class="enterprise-section-heading lower-heading"><div><h2>Analytics & alerts</h2><p>Widget-based operations overview</p></div><span class="section-caption">◈ &nbsp;WIDGETS</span></div>
    <div class="two-up"><section class="card"><div class="card-header"><div><h2>Weekly operations trend</h2><p>Illustrative activity chart · not connected to POS</p></div><span class="widget-type">${icon("trend")} Chart</span></div><div class="card-body"><div class="chart" role="img" aria-label="Fictional weekly activity chart with bars for Monday through Sunday">${bars}</div><div class="chart-key"><i></i> Current period &nbsp; · &nbsp; Illustrative trends only</div></div></section>
    <section class="card"><div class="card-header"><div><h2>Actions & notifications</h2><p>Requires attention or review</p></div><button class="mini-link" data-action="navigate" data-tab="alerts">View all →</button></div><div class="card-body">${alertRows||'<div class="empty">No alerts here</div>'}</div></section></div>`;
@@ -146,7 +146,7 @@ function reportsView() {
   const filters=["All","Pending","Approved","Returned"].map(f=>`<button class="filter-btn ${state.filter===f?"active":""}" data-action="filter" data-filter="${f}" aria-pressed="${state.filter===f}">${f}</button>`).join("");
   const rows=rs.map(r=>`<tr><td><b>${esc(r.id)}</b></td><td>${dateText(r.date)}</td><td>${esc(r.shift)}</td><td>${esc(r.owner)}</td><td>${rwf(core.calculate(r).sales)}</td><td>${rwf(core.calculate(r).difference)}</td><td>${statusTag(r.status)}</td><td><button class="mini-link" data-action="details" data-id="${esc(r.id)}">Details →</button>${state.user.role==="employee" && r.status==="Returned"?`<button class="btn small ghost" data-action="resubmit" data-id="${esc(r.id)}">Resubmit</button>`:""}</td></tr>`).join("");
   return `${sectionTitle("Shift reports","Review daily close reports and their current approval state.",state.user.role==="employee"?'<button class="btn" data-action="new-report">${icon("plus")} Create report</button>':"")}
-  <section class="card table-card"><div class="widget-table-heading"><div><b>Shift reports</b><span>Reporting data · ${rs.length} matching records</span></div><span class="widget-type">${icon("file")} Table</span></div><div class="widget-toolbar"><label class="widget-search"><span aria-hidden="true">${icon("search")}</span><input id="report-search" type="search" value="${esc(state.query)}" placeholder="Search reports, names, shifts..." aria-label="Search reports"></label><button class="btn small secondary" type="button" data-action="export-csv">${icon("download")} Export CSV</button></div><div class="filters">${filters}</div><div class="table-wrap"><table class="data-table"><thead><tr><th>Report</th><th>Date</th><th>Shift</th><th>Staff</th><th>Sales</th><th>Cash difference</th><th>Status</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="8"><div class="empty">No reports match this filter.</div></td></tr>'}</tbody></table></div></section>`;
+  <section class="card table-card"><div class="widget-table-heading"><div><b>Shift reports</b><span>Reporting data · ${rs.length} matching records</span></div><span class="widget-type">${icon("file")} Table</span></div><div class="widget-toolbar"><label class="widget-search"><span aria-hidden="true">${icon("search")}</span><input id="report-search" type="search" value="${esc(state.query)}" placeholder="Search reports, names, shifts..." aria-label="Search reports"></label><button class="btn small secondary" type="button" data-action="export-csv">${icon("download")} Export CSV</button></div><div class="filters">${filters}</div><div class="table-wrap" role="region" tabindex="0" aria-label="Scrollable shift reports table"><table class="data-table"><thead><tr><th>Report</th><th>Date</th><th>Shift</th><th>Staff</th><th>Sales</th><th>Cash difference</th><th>Status</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="8"><div class="empty">No reports match this filter.</div></td></tr>'}</tbody></table></div></section>`;
 }
 
 function approvalsView() {
@@ -183,6 +183,27 @@ function modalView() {
 
 
 let pumpLottie=null;
+let dialogReturnFocus=null;
+
+// Focus never moves behind an open modal. Return focus to its trigger on close.
+function openDialog(modal, trigger) {
+  dialogReturnFocus={action:trigger.dataset.action,id:trigger.dataset.id||null};
+  state.modal=modal;
+  render();
+  document.querySelector(".modal-panel .modal-close")?.focus({preventScroll:true});
+}
+function closeDialog() {
+  state.modal=null;
+  render();
+  if(dialogReturnFocus){
+    const controls=Array.from(document.querySelectorAll("[data-action]"));
+    const trigger=controls.find(el=>el.dataset.action===dialogReturnFocus.action &&
+      (el.dataset.id||null)===dialogReturnFocus.id);
+    trigger?.focus({preventScroll:true});
+    dialogReturnFocus=null;
+  }
+}
+
 
 function initializePumpLottie(){
   const node=document.getElementById("pump-lottie-canvas");
@@ -248,7 +269,7 @@ if(action==="show-password"){
     button.setAttribute("aria-pressed",String(revealed));
     return;
   }
-  if(action==="role"){state.loginRole=button.dataset.role;state.error="";render();return;}
+  if(action==="role"){const selected=button.dataset.role;state.loginRole=selected;state.error="";render();document.querySelector('[data-action="role"][data-role="'+selected+'"]')?.focus({preventScroll:true});return;}
   if(action==="logout"){state.user=null;state.loginRole="manager";state.tab="overview";state.error="";state.query="";state.modal=null;state.toast="";render();return;}
   if(!state.user)return;
   if(action==="navigate"){const tab=button.dataset.tab;if(navItems().some(x=>x[0]===tab)){state.tab=tab;state.filter="All";state.query="";state.modal=null;state.toast="";render();}return;}
@@ -266,12 +287,12 @@ if(action==="show-password"){
   }
   if(action==="filter"){state.filter=button.dataset.filter;render();return;}
   if(action==="dismiss"){state.toast="";render();return;}
-  if(action==="close-modal"||action==="close-overlay"){state.modal=null;render();return;}
-  if(action==="new-report"&&state.user.role==="employee"){state.modal={type:"new"};render();return;}
-  if(action==="details"){const report=state.reports.find(r=>r.id===button.dataset.id);if(report && entries().includes(report)){state.modal={type:"details",id:report.id};render();}return;}
+  if(action==="close-modal"||action==="close-overlay"){closeDialog();return;}
+  if(action==="new-report"&&state.user.role==="employee"){openDialog({type:"new"},button);return;}
+  if(action==="details"){const report=state.reports.find(r=>r.id===button.dataset.id);if(report && entries().includes(report)){openDialog({type:"details",id:report.id},button);}return;}
   if(action==="approve"){const report=state.reports.find(r=>r.id===button.dataset.id);if(!report||report.station!==state.station||state.user.role!=="manager")return;try{Object.assign(report,core.transition(report,state.user.role,"approve"));state.alerts.forEach(a=>{if(a.reportId===report.id&&a.type==="Approval")a.status="Resolved";});state.modal=null;notify(report.id+" approved (demo only).");}catch(err){notify(err.message);}return;}
   if(action==="resubmit"){const report=state.reports.find(r=>r.id===button.dataset.id);if(report&&report.station===state.station&&report.ownerRole==="employee"&&state.user.role==="employee"){try{Object.assign(report,core.transition(report,"employee","submit"));state.alerts.unshift({id:"AL-"+Date.now(),reportId:report.id,station:state.station,title:"Approval required",message:"Resubmitted shift report "+report.id+" is awaiting approval.",type:"Approval",status:"Open",age:"Just now"});notify(report.id+" resubmitted to the demo manager.");}catch(err){notify(err.message);}}return;}
-  if(action==="ask-return"){const report=state.reports.find(r=>r.id===button.dataset.id);if(report&&report.station===state.station&&core.canTransition(state.user.role,report.status,"return")){state.modal={type:"return",id:report.id};render();}return;}
+  if(action==="ask-return"){const report=state.reports.find(r=>r.id===button.dataset.id);if(report&&report.station===state.station&&core.canTransition(state.user.role,report.status,"return")){openDialog({type:"return",id:report.id},button);}return;}
   if(action==="resolve"){const alert=state.alerts.find(a=>a.id===button.dataset.id);if(alert && alert.station===state.station && state.user.role==="manager"){alert.status="Resolved";notify("Sample alert resolved.");}return;}
 }
 
@@ -324,7 +345,19 @@ function start() {
       state.station=event.target.value;state.modal=null;state.filter="All";state.query="";render();
     }
   });
-  document.addEventListener("keydown",event=>{if(event.key==="Escape"&&state.modal){state.modal=null;render();}});
+  document.addEventListener("keydown",event=>{
+    if(!state.modal)return;
+    if(event.key==="Escape"){event.preventDefault();closeDialog();return;}
+    if(event.key!=="Tab")return;
+    const dialog=document.querySelector(".modal-panel");
+    if(!dialog)return;
+    const focusable=Array.from(dialog.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'))
+      .filter(el=>el.getClientRects().length>0);
+    if(!focusable.length)return;
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if(event.shiftKey && (document.activeElement===first || !dialog.contains(document.activeElement))){event.preventDefault();last.focus();}
+    else if(!event.shiftKey && (document.activeElement===last || !dialog.contains(document.activeElement))){event.preventDefault();first.focus();}
+  });
   render();
 }
 
