@@ -36,6 +36,8 @@ jobs:
           test -s frontend-demo/designs.html
           test -s frontend-demo/designs.css
           test -s frontend-demo/styles.css
+          test -s frontend-demo/enterprise.css
+          grep -q 'href="./enterprise.css"' frontend-demo/index.html
           grep -q 'src="./app.js"' frontend-demo/index.html
   deploy:
     needs: validate

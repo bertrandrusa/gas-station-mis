@@ -59,9 +59,9 @@ function statusTag(status) {return `<span class="status ${esc(status.toLowerCase
 function stationName(id) {return (stations.find(s=>s.id===id)||stations[0]).name;}
 
 function navItems() {
-  const base=[["overview","◫","Overview"],["reports","▤","Shift reports"],["alerts","♧","Alerts"]];
-  if(state.user.role==="manager"){base.splice(2,0,["approvals","✓","Approvals"]);base.push(["team","♙","Team"]);}
-  base.push(["settings","⚙","About demo"]);
+  const base=[["overview","▦","Dashboard"],["reports","▤","Daily reports"]];
+  if(state.user.role==="manager"){base.push(["approvals","✓","Approvals"],["team","♙","Employees"]);}
+  base.push(["alerts","⚑","Alerts & notifications"],["settings","⚙","System information"]);
   return base;
 }
 
@@ -69,17 +69,17 @@ function loginView() {
   const acct=accounts[state.loginRole];
   return `<div class="login-shell">
     <section class="login-hero" aria-label="About StationFlow">
-      <div class="brand"><span class="brand-mark">⛽</span> stationflow<span class="brand-dot">.</span></div>
-      <div class="login-message"><div class="eyebrow">Gas Station Management System</div>
-        <h1>One station.<br><em>Every detail.</em></h1>
-        <p>A clearer way to track daily operations, manage your team, review shift reports, and stay ahead of what matters.</p>
-        <div class="hero-cards"><div class="hero-card"><b>02</b><span>Sample stations</span></div><div class="hero-card"><b>24/7</b><span>Shift visibility</span></div><div class="hero-card"><b>100%</b><span>Fictional data</span></div></div>
+      <div class="brand"><span class="brand-mark">▦</span><span>Station<span class="brand-dot">ERP</span><small class="brand-subtitle">Management Information System</small></span></div>
+      <div class="login-message"><div class="eyebrow">Station operations · Enterprise MIS</div>
+        <h1>Control your<br><em>operations.</em></h1>
+        <p>An integrated workspace for station reporting, cash reconciliation, staff management, and management approvals.</p>
+        <div class="hero-cards"><div class="hero-card"><b>02</b><span>Station branches</span></div><div class="hero-card"><b>06</b><span>Core MIS modules</span></div><div class="hero-card"><b>100%</b><span>Demo information</span></div></div>
       </div>
       <div class="hero-footer"><span class="pulse"></span> Interactive public product preview · No real business data</div>
     </section>
     <section class="login-form-side"><div class="auth-card">
-      <div class="pill">✦ PUBLIC DEMO</div><h2>Welcome back</h2>
-      <p class="subcopy">Choose a demo role and sign in to explore a sample station workspace.</p>
+      <div class="pill">◈ ENTERPRISE MIS DEMO</div><h2>Sign in to your workspace</h2>
+      <p class="subcopy">Choose a demonstration role to explore the MIS interface and reporting workflows.</p>
       <div class="role-switch" aria-label="Select demo role">
         <button type="button" data-action="role" data-role="manager" class="${state.loginRole==="manager"?"active":""}" aria-pressed="${state.loginRole==="manager"}">♙ &nbsp;Manager</button>
         <button type="button" data-action="role" data-role="employee" class="${state.loginRole==="employee"?"active":""}" aria-pressed="${state.loginRole==="employee"}">◈ &nbsp;Employee</button>
@@ -88,20 +88,20 @@ function loginView() {
         <label class="field"><span>Demo email</span><input type="email" name="email" autocomplete="off" required value="${esc(acct.email)}"></label>
         <label class="field"><span>Demo password</span><input type="password" name="password" autocomplete="off" required placeholder="Enter demo password"></label>
         ${state.error?`<div class="error-line" role="alert">${esc(state.error)}</div>`:""}
-        <button class="btn wide" type="submit">Sign in to dashboard <span aria-hidden="true">→</span></button>
+        <button class="btn wide" type="submit">Access MIS workspace <span aria-hidden="true">→</span></button>
       </form>
       <div class="auth-hint"><b>Try the ${state.loginRole==="manager"?"manager":"employee"} demo</b><br>Email: <code>${esc(acct.email)}</code><br>Password: <code>Demo123!</code></div>
-      <p class="auth-notice"><b>Prefer a proper MIS layout?</b> <a href="./designs.html">Explore 4 dashboard designs →</a></p>
+      <p class="auth-notice"><b>Compare layouts:</b> <a href="./designs.html">View the MIS design gallery →</a></p>
       <p class="auth-notice"><b>Demo login only.</b> These public sample credentials do not protect private information. Never enter a real password here.</p>
     </div></section>
   </div>`;
 }
 
 function sidebarView() {
-  const nav=navItems().map(([key,icon,title])=>`<button class="nav-item ${state.tab===key?"active":""}" data-action="navigate" data-tab="${key}" ${state.tab===key?'aria-current="page"':""}><span class="nav-icon">${icon}</span>${title}${key==="approvals"&&entries().filter(r=>r.status==="Pending").length?`<span class="nav-count">${entries().filter(r=>r.status==="Pending").length}</span>`:""}</button>`).join("");
-  return `<aside class="sidebar"><div class="brand"><span class="brand-mark">⛽</span>stationflow<span class="brand-dot">.</span></div>
-     <nav aria-label="Main menu"><div class="nav-label">Workspace</div>${nav}</nav>
-     <div class="sidebar-bottom"><div class="sidebar-note"><strong>✦ Demonstration mode</strong>This workspace uses sample data only. Your actual ERPNext database is not connected.</div>
+  const nav=navItems().map(([key,icon,title])=>`${key==="overview"?"<div class=\"nav-label\">OPERATIONS</div>":key==="approvals"?"<div class=\"nav-label\">MANAGEMENT</div>":key==="alerts"?"<div class=\"nav-label\">MONITORING</div>":key==="settings"?"<div class=\"nav-label\">SYSTEM</div>":""}<button class="nav-item ${state.tab===key?"active":""}" data-action="navigate" data-tab="${key}" ${state.tab===key?'aria-current="page"':""}><span class="nav-icon">${icon}</span>${title}${key==="approvals"&&entries().filter(r=>r.status==="Pending").length?`<span class="nav-count">${entries().filter(r=>r.status==="Pending").length}</span>`:""}</button>`).join("");
+  return `<aside class="sidebar"><div class="side-brand"><div class="brand"><span class="brand-mark">▦</span><span>Station<span class="brand-dot">ERP</span><small class="brand-subtitle">Management Information System</small></span></div></div><div class="side-site"><span class="side-site-label">CURRENT WORKSPACE</span><b>⛽ &nbsp;${esc(stationName(state.station))}</b><small>Station operations</small></div>
+     <nav aria-label="Main menu">${nav}</nav>
+     <div class="sidebar-bottom"><div class="sidebar-note"><strong>DEMONSTRATION PORTAL</strong>Sample data only. Your real Frappe / ERPNext system is not connected.</div>
      <div class="side-profile"><span class="avatar">${esc(state.user.name.split(" ").map(x=>x[0]).join(""))}</span><div><b>${esc(state.user.name)}</b><small>${esc(state.user.title)}</small></div><button class="logout" type="button" title="Switch user" aria-label="Sign out" data-action="logout">↪</button></div></div>
      </aside>`;
 }
@@ -124,11 +124,13 @@ function overviewView() {
   const bars=chartValues.map((v,i)=>`<div class="bar-col"><div class="bar ${i===6?"current":""} bar-${v}"><span class="bar-label">${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"][i]}</span></div></div>`).join("");
   const alertRows=activeAlerts().slice(0,3).map(a=>`<div class="list-row"><span class="list-icon">${a.status==="Open"?"⚑":"✓"}</span><div class="list-main"><b>${esc(a.title)}</b><small>${esc(a.age)}</small></div>${statusTag(a.status)}</div>`).join("");
   const reports=rs.slice(0,5).map(r=>`<tr><td><b>${esc(r.id)}</b></td><td>${esc(r.shift)}</td><td>${esc(r.owner)}</td><td>${dateText(r.date)}</td><td>${rwf(core.calculate(r).sales)}</td><td>${statusTag(r.status)}</td><td><button class="mini-link" data-action="details" data-id="${esc(r.id)}">View ↗</button></td></tr>`).join("");
-  return `${sectionTitle("Good "+(new Date().getHours()<12?"morning":new Date().getHours()<18?"afternoon":"evening")+", "+state.user.name.split(" ")[0]+".","Here's what's happening at "+stationName(state.station)+" today.",state.user.role==="employee"?'<button class="btn" data-action="new-report">+ New shift report</button>':'<button class="btn secondary" data-action="navigate" data-tab="approvals">Review approvals →</button>')}
+  return `${sectionTitle("Management overview","Station: "+stationName(state.station)+" · "+new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}),state.user.role==="employee"?'<button class="btn" data-action="new-report">+ New shift report</button>':'<button class="btn secondary" data-action="navigate" data-tab="approvals">Review pending approvals →</button>')}
    <div class="kpi-grid">${card1}${card2}${card3}${card4}</div>
-   <div class="two-up"><section class="card"><div class="card-header"><div><h2>Weekly sales snapshot</h2><p>Illustrative activity chart · not connected to POS</p></div><span class="pill compact">SAMPLE DATA</span></div><div class="card-body"><div class="chart" role="img" aria-label="Fictional weekly activity chart with bars for Monday through Sunday">${bars}</div><div class="chart-key"><i></i> Current period &nbsp; · &nbsp; Illustrative trends only</div></div></section>
-   <section class="card"><div class="card-header"><div><h2>Operations & alerts</h2><p>Latest station notifications</p></div><button class="mini-link" data-action="navigate" data-tab="alerts">View all →</button></div><div class="card-body">${alertRows||'<div class="empty">No alerts here</div>'}</div></section></div>
-   <section class="card table-card"><div class="card-header tight"><div><h2>Recent shift reports</h2><p>Latest submissions and approvals</p></div><button class="mini-link" data-action="navigate" data-tab="reports">View all →</button></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Report</th><th>Shift</th><th>Submitted by</th><th>Date</th><th>Total sales</th><th>Status</th><th></th></tr></thead><tbody>${reports||'<tr><td colspan="7">No reports</td></tr>'}</tbody></table></div></section>`;
+   <div class="enterprise-section-heading"><div><h2>Daily report register</h2><p>Review shift submissions, approvals, and assigned station staff.</p></div><span class="section-caption">OPERATIONS REGISTER</span></div>
+   <section class="card table-card"><div class="card-header tight"><div><h2>Shift report register</h2><p>Latest station submissions, with approval status</p></div><button class="mini-link" data-action="navigate" data-tab="reports">View all →</button></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Report</th><th>Shift</th><th>Submitted by</th><th>Date</th><th>Total sales</th><th>Status</th><th></th></tr></thead><tbody>${reports||'<tr><td colspan="7">No reports</td></tr>'}</tbody></table></div></section>
+   <div class="enterprise-section-heading lower-heading"><div><h2>Operations intelligence</h2><p>Illustrative trends and operational exceptions.</p></div><span class="section-caption">MONITORING</span></div>
+   <div class="two-up"><section class="card"><div class="card-header"><div><h2>Weekly operations trend</h2><p>Illustrative activity chart · not connected to POS</p></div><span class="pill compact">SAMPLE DATA</span></div><div class="card-body"><div class="chart" role="img" aria-label="Fictional weekly activity chart with bars for Monday through Sunday">${bars}</div><div class="chart-key"><i></i> Current period &nbsp; · &nbsp; Illustrative trends only</div></div></section>
+   <section class="card"><div class="card-header"><div><h2>Operations & alerts</h2><p>Latest station notifications</p></div><button class="mini-link" data-action="navigate" data-tab="alerts">View all →</button></div><div class="card-body">${alertRows||'<div class="empty">No alerts here</div>'}</div></section></div>`;
 }
 
 function reportsView() {
@@ -178,7 +180,7 @@ function render() {
   const view=(tabs[state.tab]||overviewView)();
   const menu=navItems().map(([id,symbol,label])=>`<button type="button" class="${state.tab===id?"active":""}" data-action="navigate" data-tab="${id}" ${state.tab===id?'aria-current="page"':""}><span>${symbol}</span>${esc(label)}</button>`).join("");
   const select=state.user.role==="manager"?`<select class="select station" id="station-select" aria-label="Select station">${stations.map(s=>`<option value="${esc(s.id)}" ${s.id===state.station?"selected":""}>${esc(s.name)}</option>`).join("")}</select>`:`<span class="select station station-text">${esc(stationName(state.station))}</span>`;
-  app.innerHTML=`<div class="app-shell">${sidebarView()}<div class="main-area"><header class="topbar"><div class="top-title"><span class="top-trail">Workspace /</span> Station operations</div><div class="top-actions"><span class="today-stamp">${new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}</span>${select}</div></header><main class="content"><div class="demo-banner"><b>✦ DEMO MODE &nbsp;</b> Fictional station data · Simulated sign-in · No real ERPNext connection</div>${view}<div class="footer-note">StationFlow product preview · Nothing on this page is a live transaction or production record.</div></main><nav class="mobile-bar" aria-label="Mobile menu">${menu}</nav></div></div>${modalView()}${state.toast?`<div class="toast" role="status">✓ ${esc(state.toast)} <button class="btn small ghost" data-action="dismiss">×</button></div>`:""}`;
+  app.innerHTML=`<div class="app-shell enterprise-shell">${sidebarView()}<div class="main-area"><header class="topbar"><div class="top-title"><span class="top-trail">Station Management <span class="crumb-slash">/</span></span><strong>${esc((navItems().find(x=>x[0]===state.tab)||navItems()[0])[2])}</strong><small>Management Information System</small></div><div class="top-actions"><span class="today-stamp">${new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}</span>${select}<span class="top-role">${state.user.role==="manager"?"MANAGER":"EMPLOYEE"}</span></div></header><main class="content"><div class="demo-banner"><b>◈ TRAINING / DEMO ENVIRONMENT</b> &nbsp; This interface uses fictional records and simulated sign-in. It does not access ERPNext.</div>${view}<div class="footer-note">StationERP | Management Information System · Demonstration data only · Not a production system.</div></main><nav class="mobile-bar" aria-label="Mobile menu">${menu}</nav></div></div>${modalView()}${state.toast?`<div class="toast" role="status">✓ ${esc(state.toast)} <button class="btn small ghost" data-action="dismiss">×</button></div>`:""}`;
 }
 
 function notify(message) {state.toast=message;render();}
