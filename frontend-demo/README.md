@@ -26,12 +26,6 @@ This demo is NOT the actual ERPNext system. Role permissions and sign-in are sim
 
 The sample station team and report authors use the names of Manchester City footballers for fun. These are **fictional staff assignments**: no real player works at these stations, and this demo is not affiliated with or endorsed by Manchester City FC. No real employee or footballer information is collected.
 
-## Other dashboard concepts
-
-Open [MIS design gallery](./designs.html) to compare four possible interface directions before changing the main frontend.
-
 ## Selected frontend design — Classic Enterprise MIS
 
-**Option 1 is now applied to the main website** at `index.html`. The enterprise design uses a navy grouped navigation sidebar, formal application header, reporting-first overview, status-driven table register, approval cards, and a more restrained business portal login. The source is split into original functionality (`app.js` / `core.js`) and enterprise styling (`enterprise.css` loaded after `styles.css`).
-
-The [four-option gallery](./designs.html) remains available for comparisons. It is a set of static visual concepts, not a live second dashboard.
+**Classic Enterprise MIS is the only published frontend design and is applied to the main website** at `index.html`. The enterprise design uses a navy grouped navigation sidebar, formal application header, reporting-first overview, status-driven table register, approval cards, and a more restrained business portal login. The source is split into original functionality (`app.js` / `core.js`) and enterprise styling (`enterprise.css` loaded after `styles.css`).

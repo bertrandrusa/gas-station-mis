@@ -91,7 +91,6 @@ function loginView() {
         <button class="btn wide" type="submit">Access MIS workspace <span aria-hidden="true">→</span></button>
       </form>
       <div class="auth-hint"><b>Try the ${state.loginRole==="manager"?"manager":"employee"} demo</b><br>Email: <code>${esc(acct.email)}</code><br>Password: <code>Demo123!</code></div>
-      <p class="auth-notice"><b>Compare layouts:</b> <a href="./designs.html">View the MIS design gallery →</a></p>
       <p class="auth-notice"><b>Demo login only.</b> These public sample credentials do not protect private information. Never enter a real password here.</p>
     </div></section>
   </div>`;

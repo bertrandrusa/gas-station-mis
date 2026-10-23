@@ -115,8 +115,8 @@ Offline tests cover metadata, calculations and authorization contracts; the Benc
 
 MIT for this custom app code (see LICENSE). The ERPNext and HRMS upstream projects have **their own licenses**; installing this app does not change those obligations.
 
-## Visual dashboard design options
+## Public demo frontend
 
-Compare four clickable MIS prototype layouts in the [design gallery](./frontend-demo/designs.html): Classic Enterprise MIS, Operations Command Center, Executive Analytics, and Fuel Station Workbench. These are *alternatives* to the existing demo, not a permanent redesign until a style is selected.
+The [Classic Enterprise MIS frontend](./frontend-demo/) is the only published demo design. It provides a static sample login, reporting-first dashboard, manager approvals, alerts, and fictional team assignments using Manchester City footballers' names. It is not affiliated with the club.
 
-Manchester City players are used as fictional sample names in the demo; this software is not affiliated with the club.
+The demo does **not** connect to the actual ERPNext/Frappe site and must not be used to handle real credentials or business records.

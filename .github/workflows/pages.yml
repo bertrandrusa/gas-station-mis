@@ -28,13 +28,10 @@ jobs:
       - name: Check JavaScript and demo tests
         run: |
           node --check frontend-demo/app.js
-          node --check frontend-demo/designs.js
           node --test frontend-demo/tests/*.test.js
       - name: Check static assets
         run: |
           test -s frontend-demo/index.html
-          test -s frontend-demo/designs.html
-          test -s frontend-demo/designs.css
           test -s frontend-demo/styles.css
           test -s frontend-demo/enterprise.css
           grep -q 'href="./enterprise.css"' frontend-demo/index.html
