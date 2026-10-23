@@ -194,52 +194,67 @@
 }
 .station-portal .auth-card .auth-notice b{color:#5b7189;font-weight:700}
 
-/* User-supplied fuel-pump Lottie is the visual—not a fabricated meter widget. */
+/* Only motion on the login screen: user's actual Lottie fuel pump. */
+.station-portal button,
+.station-portal .pulse {
+  animation: none !important;
+  transition: none !important;
+}
+.station-portal button:hover,
+.station-portal button:active { transform:none !important; }
 .station-portal .fuel-demo {
-  margin-top:24px;
-  display:flex;align-items:center;gap:18px;
-  width:min(100%,540px);
+  margin:14px 0 0;
   padding:0;
-  border:0;border-radius:10px;
+  width:min(100%,390px);
+  min-height:0;
+  display:block;
+  text-align:center;
+  border:0;
+  border-radius:12px;
   background:transparent;
-  color:#fff;text-align:left;
   box-shadow:none;
   cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
 }
-.station-portal .fuel-demo:hover:not(:disabled){
-  background:transparent;border:0;transform:none;filter:none;
+.station-portal .fuel-demo:hover,
+.station-portal .fuel-demo:active {
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  filter:none;
 }
-.station-portal .fuel-demo:focus-visible{
-  outline:2px solid #d8eaff;outline-offset:4px;
+.station-portal .fuel-demo:focus-visible {
+  outline:2px solid #d8eaff;
+  outline-offset:3px;
 }
 .station-portal .pump-illustration {
-  display:grid;place-items:center;
-  flex:0 0 clamp(154px,18vw,230px);
-  width:clamp(154px,18vw,230px);
-  height:clamp(166px,19vw,236px);
+  display:block;
+  width:100%;
+  aspect-ratio:1/1;
+  height:auto;
+  min-height:0;
   overflow:hidden;
-  position:relative;
 }
-.station-portal .lottie-canvas{
-  display:block;width:100%;height:100%;
-  overflow:hidden;pointer-events:none;
+.station-portal .lottie-canvas {
+  display:block;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  pointer-events:none;
 }
-.station-portal .lottie-canvas svg{
-  width:100%!important;height:100%!important;
-  display:block;overflow:hidden;
+.station-portal .lottie-canvas svg {
+  display:block;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden;
 }
-.station-portal .pump-fallback{font-size:70px;line-height:1}
+.station-portal .pump-fallback {
+  display:grid;
+  place-items:center;
+  width:100%;height:100%;
+  font-size:100px;
+}
 .station-portal .pump-fallback[hidden]{display:none}
-.station-portal .pump-content{display:block;max-width:230px;padding:4px 0}
-.station-portal .pump-ui strong{font-size:14px;color:#fff;font-weight:700}
-.station-portal .pump-instruction{
-  display:block;margin-top:9px;
-  color:#dbedff;font-size:12px;line-height:1.5;
-}
-.station-portal .pump-visual-caption{
-  display:block;color:#a8c8e0;font-size:10px;line-height:1.5;margin-top:10px;
-}
-.station-portal .fuel-demo:hover .pump-ui strong{text-decoration:underline;text-underline-offset:4px}
 
 /* Honor reduced-motion and keep the authentication card motionless. */
 @media (prefers-reduced-motion:reduce){
@@ -254,6 +269,7 @@
  .station-portal .login-message p{font-size:13px}
 }
 @media(max-width:810px){
+ .station-portal .fuel-demo{margin:10px auto 0;width:min(100%,330px)}
  .login-shell.station-portal{grid-template-columns:1fr;gap:0;overflow:visible;min-height:100svh;background-position:38% center}
  .login-shell.station-portal::before{background:linear-gradient(180deg,#0a2139bb 0%,#0a2139b8 46%,#0a2139ef 100%)}
  .station-portal .login-hero{min-height:auto;padding:25px 22px 12px;gap:17px}
@@ -266,16 +282,17 @@
  .station-portal .hero-footer{display:none}
 }
 @media(max-width:450px){
+ .station-portal .fuel-demo{margin:8px auto 0;width:min(100%,290px)}
  .station-portal .login-hero{padding:20px 17px 0}
  .station-portal .login-message{margin:22px 0 4px}
  .station-portal .login-message .eyebrow{font-size:9px;letter-spacing:.10em;margin-bottom:12px}
  .station-portal .login-message h1{font-size:33px}
  .station-portal .login-message p{font-size:12px}
- .station-portal .fuel-demo{margin-top:12px;width:100%;gap:11px}
- .station-portal .pump-illustration{flex-basis:138px;width:138px;height:147px}
- .station-portal .pump-content{min-width:0;flex:1}
- .station-portal .pump-ui strong{font-size:12px}
- .station-portal .pump-instruction{font-size:11px}
+ 
+ 
+ 
+ 
+ 
  .station-portal .login-form-side{padding:16px 13px 25px}
  .station-portal .auth-card{padding:24px 21px;border-radius:12px}
  .station-portal .auth-card h2{font-size:26px}

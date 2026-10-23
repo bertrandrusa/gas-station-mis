@@ -75,13 +75,12 @@ function loginView() {
       <div class="login-message"><div class="eyebrow">Connected station operations</div>
         <h1>Built for the way<br><em>stations work.</em></h1>
         <p>Manage people, shift reporting, and station oversight from one dependable platform.</p>
-        <button type="button" class="fuel-demo" data-action="pump-demo" aria-label="Replay the uploaded fuel-pump animation">
-  <span class="pump-illustration" aria-hidden="true"><span id="pump-lottie-canvas" class="lottie-canvas"></span><span class="pump-fallback" hidden>⛽</span></span>
-  <span class="pump-content"><span class="pump-ui"><strong>Fuel pump animation</strong></span>
-    <span class="pump-instruction" data-pump-label>Hover or tap to watch the original animation</span>
-    <span class="pump-visual-caption">Interactive visual only · No physical pump connection</span>
-  </span>
-</button>
+        <button type="button" class="fuel-demo" data-action="pump-demo" aria-label="Replay the original fuel-pump Lottie animation" title="Tap or hover to replay the fuel pump animation">
+          <span class="pump-illustration" aria-hidden="true">
+            <span id="pump-lottie-canvas" class="lottie-canvas"></span>
+            <span class="pump-fallback" hidden>⛽</span>
+          </span>
+        </button>
       </div>
       <div class="hero-footer"><span class="pulse"></span> Authorized preview · Fictional data only</div>
     </section>
@@ -187,10 +186,7 @@ let pumpLottie=null;
 let pumpPlaying=false;
 function updatePumpControl(){
   const button=document.querySelector('[data-action="pump-demo"]');
-  if(!button)return;
-  button.setAttribute("aria-busy",String(pumpPlaying));
-  const caption=button.querySelector("[data-pump-label]");
-  if(caption)caption.textContent=pumpPlaying?"Animation playing · tap to replay":"Hover or tap to replay the animation";
+  if(button)button.setAttribute("aria-busy",String(pumpPlaying));
 }
 function animateUploadedPump(){
   if(!pumpLottie?.isLoaded)return false;
@@ -211,8 +207,7 @@ function initializePumpLottie(){
   pumpPlaying=false;
   if(typeof window.lottie?.loadAnimation!=="function"){
     node.closest(".pump-illustration")?.querySelector(".pump-fallback")?.removeAttribute("hidden");
-    const label=document.querySelector(".fuel-demo [data-pump-label]");
-    if(label)label.textContent="Animation player unavailable";
+
     return;
   }
   const instance=window.lottie.loadAnimation({
@@ -239,8 +234,7 @@ function initializePumpLottie(){
   const showFailure=()=>{
     if(!node.isConnected)return;
     node.closest(".pump-illustration")?.querySelector(".pump-fallback")?.removeAttribute("hidden");
-    const label=document.querySelector(".fuel-demo [data-pump-label]");
-    if(label)label.textContent="Animation could not load";
+
   };
   instance.addEventListener("data_failed",showFailure);
   instance.addEventListener("error",showFailure);
@@ -267,8 +261,7 @@ function actions(event) {
   if(action==="close-overlay" && event.target!==button)return;
   if(action==="pump-demo"){
     if(!animateUploadedPump()){
-      const label=button.querySelector("[data-pump-label]");
-      if(label)label.textContent="Animation is loading";
+
     }
     return;
   }
