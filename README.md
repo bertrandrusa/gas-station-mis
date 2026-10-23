@@ -117,6 +117,6 @@ MIT for this custom app code (see LICENSE). The ERPNext and HRMS upstream projec
 
 ## Public demo frontend
 
-The [Classic Enterprise MIS frontend](./frontend-demo/) is the only published demo design. It provides a static sample login, reporting-first dashboard, manager approvals, alerts, and fictional team assignments using Manchester City footballers' names. It is not affiliated with the club.
+The [StationDesk public frontend](./frontend-demo/) uses an Appsmith-inspired workspace style with a left navigation rail, widget cards, compact data tables and reporting tools. It is a custom HTML/CSS/JavaScript implementation, **not an Appsmith project** and not affiliated with Appsmith.
 
-The demo does **not** connect to the actual ERPNext/Frappe site and must not be used to handle real credentials or business records.
+It preserves the demo Manager / Employee roles, report approvals, station alerts, and fictional Manchester City player names. The Daily reports table supports filtering, searching and exporting sample CSV files. The public demo is not connected to a real Frappe/ERPNext backend; no true authentication or private data is provided.

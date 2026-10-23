@@ -26,6 +26,14 @@ This demo is NOT the actual ERPNext system. Role permissions and sign-in are sim
 
 The sample station team and report authors use the names of Manchester City footballers for fun. These are **fictional staff assignments**: no real player works at these stations, and this demo is not affiliated with or endorsed by Manchester City FC. No real employee or footballer information is collected.
 
-## Selected frontend design — Classic Enterprise MIS
+## Selected frontend design — Appsmith-inspired workspace
 
-**Classic Enterprise MIS is the only published frontend design and is applied to the main website** at `index.html`. The enterprise design uses a navy grouped navigation sidebar, formal application header, reporting-first overview, status-driven table register, approval cards, and a more restrained business portal login. The source is split into original functionality (`app.js` / `core.js`) and enterprise styling (`enterprise.css` loaded after `styles.css`).
+The only published frontend is a standalone **StationDesk** demo, visually inspired by the light canvas, widgets, navigation and tables common in Appsmith-built internal tools. It does **not use Appsmith's platform** and is not affiliated with Appsmith.
+
+- Purple page navigation, charcoal app bar and orange primary actions
+- Dashboard stat, chart and alert widgets, compact table views
+- Search and CSV export in Daily reports (fictional records only)
+- Simulated Manager / Employee login and existing demo workflows
+- Styles in `workspace.css`, source interactions in `app.js`, shared pure calculations in `core.js`
+
+The main `index.html` loads `styles.css` then `workspace.css`. Only one design is shipped.
