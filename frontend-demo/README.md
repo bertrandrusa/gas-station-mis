@@ -36,7 +36,7 @@ The UI follows the documented ADS conventions, including:
 - Base spacing scale of 2, 4, 8, 12, 16, 20 and 24px
 - 36px medium and 24px small buttons; primary / secondary / tertiary treatments, 6px rounding
 - 36px medium input and select controls with readable labels, focus outlines and neutral borders
-- White and gray workspace surfaces, semantic status colors and official ADS-inspired orange action accent
+- Professional white and slate-gray workspace surfaces with custom corporate blue (`#2563eb`) primary actions, navy header, and green / amber / red reserved for statuses
 - Unified line icons (locally rendered SVG), navigation, tables, filters, inputs, dialogs and toast notifications
 - Sample CSV export and search for daily reports; simulated reports/approvals/team/alerts
 
@@ -49,3 +49,14 @@ Official public design-system references:
 - https://github.com/appsmithorg/design-system/blob/release/packages/design-system/src/__theme__/default/colors.css
 
 Appsmith's newer typography theme imports PT Root UI, but this demo **does not bundle or redistribute font files**; it uses a resilient system-font fallback.
+
+## Corporate color palette
+
+The live StationDesk demo uses a custom **blue and white** business theme while preserving the ADS-inspired component sizes, spacing and fonts. Blue is intentionally different from Appsmith's own orange brand color.
+
+- Primary buttons, active navigation and links: `#2563eb` (hover `#1d4ed8`)
+- Workspace header: `#142b49` navy
+- Page background: `#f4f7fb`, cards / input fields: white
+- Report status colors: green (approved), amber (pending), red (returned / danger)
+
+Only presentation changed; sample users, data, roles, reports and the API-disconnected demo remain as before.
