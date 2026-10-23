@@ -65,8 +65,10 @@ Only presentation changed; sample users, data, roles, reports and the API-discon
 
 The public landing/login page now follows **Option C: Premium Station Portal** from the design review. It shows an original vector forecourt illustration, navy photographic-style overlay, a floating white sign-in card, and an interactive fuel-pump graphic on the left.
 
-- Click or tap the **Interactive fuel pump** control to simulate a one-shot 18% → 86% tank fill and small nozzle movement; tap again to reset. Hover moves the nozzle slightly. **This is visual-only**, not connected to any real fuel pump, database, POS, or ERPNext service.
-- All animation is user-triggered. `prefers-reduced-motion` disables nonessential transitions.
-- The **Show / Hide** password toggle is functional. The Manager and Employee demo accounts, simulated login, dashboards, approvals, and reports remain unchanged.
-- The background uses original `forecourt-scene.svg` and the additional styling lives in `login-portal.css`. No Lottie or third-party runtime is necessary, and no external assets or credentials are loaded.
+- Click or tap the **Animated fuel pump (Lottie)** control to play a native Lottie JSON fuel-pump animation and simulate an 18% → 86% tank fill; tap again to reset. Hover previews the opening frames on pointer devices. **This is visual-only**, not connected to real pumps, database, POS, or ERPNext service.
+- The animation uses a locally served `fuel-pump-lottie.json` and the genuine `lottie-web` light renderer, pinned to v5.12.2 (`vendor/lottie-light.min.js`, MIT license at `vendor/LOTTIE_LICENSE.md`). All runtime assets are served from the same domain; no outside JavaScript service or third-party requests.
+- **Source distinction:** this is an original StationDesk fuel-pump animation encoded as genuine Lottie JSON, **not** the specific community-authored Fuel Pump animation by ShriyamDalal on LottieFiles. That particular asset's downloadable file was not retrievable through the available services. To replace it with that exact artwork, obtain its Lottie JSON from [LottieFiles](https://lottiefiles.com/free-animation/fuel-pump-paFVEnDJKN) and replace the local `fuel-pump-lottie.json` after testing compatibility.
+- All animation is user-triggered. `prefers-reduced-motion` displays the final visual without playing motion.
+- The **Show / Hide** password toggle, Manager and Employee demo accounts, dashboards, approvals and reports remain unchanged.
+- The background uses original `forecourt-scene.svg` and the premium portal styles live in `login-portal.css`.
 - The public demo login is not actual authentication; real access must be provided by a secured Frappe backend.
