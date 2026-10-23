@@ -148,8 +148,8 @@ input:focus-visible, textarea:focus-visible, [tabindex="0"]:focus-visible {
   .workspace-shell .filter-btn { min-height:36px; }
   .workspace-shell .mini-link { min-height:36px; padding:7px; }
   .workspace-shell .mobile-bar button:active,
-  .workspace-shell .nav-item:active,
-  .workspace-shell .btn:active:not(:disabled) { background-color:#dbeafe; }
+  .workspace-shell .nav-item:active { background-color:#dbeafe; }
+  .workspace-shell .btn:active:not(:disabled) { filter:brightness(.92); }
   .station-portal .auth-card .btn.wide:active { background:#1e40af; }
 }
 @media (prefers-reduced-motion:reduce) {
