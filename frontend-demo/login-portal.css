@@ -194,62 +194,56 @@
 }
 .station-portal .auth-card .auth-notice b{color:#5b7189;font-weight:700}
 
-/* Native Lottie JSON pump playback via the local lottie-web player. */
+/* User-supplied fuel-pump Lottie is the visual—not a fabricated meter widget. */
 .station-portal .fuel-demo {
-  margin-top:31px;
-  width:min(100%,417px);
-  min-height:144px;
-  position:relative;
-  display:grid;grid-template-columns:104px 1fr;align-items:center;gap:16px;
-  padding:13px 17px;
-  border:1px solid #9bc3eb6e;
-  border-radius:12px;
-  background:linear-gradient(135deg,#112f4ecf,#16416cba);
-  color:#edf6ff;
-  box-shadow:0 10px 27px rgba(4,22,40,.18);
-  text-align:left;
+  margin-top:24px;
+  display:flex;align-items:center;gap:18px;
+  width:min(100%,540px);
+  padding:0;
+  border:0;border-radius:10px;
+  background:transparent;
+  color:#fff;text-align:left;
+  box-shadow:none;
   cursor:pointer;
 }
-.station-portal .fuel-demo:focus-visible{outline:2px solid #d8eaff;outline-offset:4px}
-.station-portal .fuel-demo:hover{background:linear-gradient(135deg,#143758ec,#1c4f7fcb);border-color:#a1d0f2a3}
-.station-portal .pump-illustration{display:grid;place-items:center;height:124px;width:102px;position:relative}
-.station-portal .pump-illustration svg{width:100%;height:100%;overflow:hidden}
+.station-portal .fuel-demo:hover:not(:disabled){
+  background:transparent;border:0;transform:none;filter:none;
+}
+.station-portal .fuel-demo:focus-visible{
+  outline:2px solid #d8eaff;outline-offset:4px;
+}
+.station-portal .pump-illustration {
+  display:grid;place-items:center;
+  flex:0 0 clamp(154px,18vw,230px);
+  width:clamp(154px,18vw,230px);
+  height:clamp(166px,19vw,236px);
+  overflow:hidden;
+  position:relative;
+}
 .station-portal .lottie-canvas{
-  display:block;width:100%;height:100%;min-height:0;
+  display:block;width:100%;height:100%;
   overflow:hidden;pointer-events:none;
 }
-.station-portal .lottie-canvas svg{width:100%!important;height:100%!important;display:block;overflow:hidden}
-.station-portal .pump-fallback{font-size:48px;line-height:1}
+.station-portal .lottie-canvas svg{
+  width:100%!important;height:100%!important;
+  display:block;overflow:hidden;
+}
+.station-portal .pump-fallback{font-size:70px;line-height:1}
 .station-portal .pump-fallback[hidden]{display:none}
-.station-portal .pump-ui{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
-.station-portal .pump-ui strong{font-size:12px;color:#fff;font-weight:700}
-.station-portal .pump-percent{
-  font-size:11px;font-variant-numeric:tabular-nums;
-  color:#bfdeff;font-weight:700;
-}
-.station-portal .pump-meter{
-  display:block;width:100%;height:6px;
-  background:#e4f2ff29;border-radius:8px;overflow:hidden;
-  box-shadow:inset 0 0 0 1px #dfedff15;
-}
-.station-portal .pump-meter-fill{
-  display:block;height:100%;width:18%;
-  background:linear-gradient(90deg,#67b1ff,#c1ecff);
-  border-radius:inherit;
-  transition:width 5500ms cubic-bezier(.18,.68,.32,1);
-}
-.station-portal .fuel-demo.is-fueled .pump-meter-fill{width:86%}
-.station-portal .fuel-demo.is-playing .pump-instruction{color:#b7d9ff}
+.station-portal .pump-content{display:block;max-width:230px;padding:4px 0}
+.station-portal .pump-ui strong{font-size:14px;color:#fff;font-weight:700}
 .station-portal .pump-instruction{
   display:block;margin-top:9px;
-  font-size:10px;color:#cfdef0;line-height:1.4;
+  color:#dbedff;font-size:12px;line-height:1.5;
 }
-.station-portal .fuel-demo.is-fueled .pump-instruction{color:#c0f2dc}
-.station-portal .pump-visual-caption{font-size:9px;color:#adc2d8;margin-top:6px;display:block}
+.station-portal .pump-visual-caption{
+  display:block;color:#a8c8e0;font-size:10px;line-height:1.5;margin-top:10px;
+}
+.station-portal .fuel-demo:hover .pump-ui strong{text-decoration:underline;text-underline-offset:4px}
 
 /* Honor reduced-motion and keep the authentication card motionless. */
 @media (prefers-reduced-motion:reduce){
- .station-portal .pump-meter-fill,.station-portal .btn.wide{transition:none!important}
+ .station-portal .btn.wide{transition:none!important}
  .station-portal .btn.wide:hover{transform:none!important}
 }
 @media(max-width:1100px) {
@@ -277,11 +271,11 @@
  .station-portal .login-message .eyebrow{font-size:9px;letter-spacing:.10em;margin-bottom:12px}
  .station-portal .login-message h1{font-size:33px}
  .station-portal .login-message p{font-size:12px}
- .station-portal .fuel-demo{min-height:102px;margin-top:15px;grid-template-columns:74px 1fr;padding:9px 12px;gap:10px}
- .station-portal .pump-illustration{width:73px;height:85px}
- .station-portal .pump-illustration svg{width:100%;height:100%}
- .station-portal .pump-ui strong{font-size:11px}
- .station-portal .pump-instruction{font-size:9px}
+ .station-portal .fuel-demo{margin-top:12px;width:100%;gap:11px}
+ .station-portal .pump-illustration{flex-basis:138px;width:138px;height:147px}
+ .station-portal .pump-content{min-width:0;flex:1}
+ .station-portal .pump-ui strong{font-size:12px}
+ .station-portal .pump-instruction{font-size:11px}
  .station-portal .login-form-side{padding:16px 13px 25px}
  .station-portal .auth-card{padding:24px 21px;border-radius:12px}
  .station-portal .auth-card h2{font-size:26px}

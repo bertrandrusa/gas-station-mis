@@ -34,4 +34,8 @@ test("login uses the full Lottie player for the uploaded masked artwork",()=>{
   assert.match(html,/src="\.\/vendor\/lottie\.min\.js"/);
   assert.match(js,/path:"\.\/fuel-pump-lottie\.json"/);
   assert.match(js,/prefers-reduced-motion/);
+  assert.match(js,/animateUploadedPump\(\)/);
+  assert.doesNotMatch(js,/pump-meter|18%|86%/);
+  const css=fs.readFileSync(path.join(root,"login-portal.css"),"utf8");
+  assert.doesNotMatch(css,/pump-meter|pump-percent/);
 });
