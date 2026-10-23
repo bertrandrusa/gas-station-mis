@@ -49,7 +49,9 @@ jobs:
           grep -q 'src="./vendor/lottie.min.js"' frontend-demo/index.html
           grep -q 'loadAnimation' frontend-demo/app.js
           grep -q 'href="./login-portal.css"' frontend-demo/index.html
-          grep -q 'data-action="pump-demo"' frontend-demo/app.js
+          grep -q 'loop:true,autoplay:false' frontend-demo/app.js
+          grep -q 'instance.play()' frontend-demo/app.js
+          ! grep -q 'data-action="pump-demo"' frontend-demo/app.js
           grep -q 'prefers-reduced-motion' frontend-demo/login-portal.css
           grep -q "ADS-inspired" frontend-demo/workspace.css
           grep -q -- "--ds-primary:#2563eb" frontend-demo/workspace.css

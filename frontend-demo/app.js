@@ -75,12 +75,12 @@ function loginView() {
       <div class="login-message"><div class="eyebrow">Connected station operations</div>
         <h1>Built for the way<br><em>stations work.</em></h1>
         <p>Manage people, shift reporting, and station oversight from one dependable platform.</p>
-        <button type="button" class="fuel-demo" data-action="pump-demo" aria-label="Replay the original fuel-pump Lottie animation" title="Tap or hover to replay the fuel pump animation">
+        <div class="fuel-demo" role="img" aria-label="Animated fuel pump illustration">
           <span class="pump-illustration" aria-hidden="true">
             <span id="pump-lottie-canvas" class="lottie-canvas"></span>
             <span class="pump-fallback" hidden>⛽</span>
           </span>
-        </button>
+        </div>
       </div>
       <div class="hero-footer"><span class="pulse"></span> Authorized preview · Fictional data only</div>
     </section>
@@ -183,35 +183,19 @@ function modalView() {
 
 
 let pumpLottie=null;
-let pumpPlaying=false;
-function updatePumpControl(){
-  const button=document.querySelector('[data-action="pump-demo"]');
-  if(button)button.setAttribute("aria-busy",String(pumpPlaying));
-}
-function animateUploadedPump(){
-  if(!pumpLottie?.isLoaded)return false;
-  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){
-    pumpPlaying=false;
-    pumpLottie.goToAndStop(Math.max(0,pumpLottie.totalFrames-1),true);
-  }else{
-    pumpPlaying=true;
-    pumpLottie.goToAndPlay(0,true);
-  }
-  updatePumpControl();
-  return true;
-}
+
 function initializePumpLottie(){
   const node=document.getElementById("pump-lottie-canvas");
   if(!node)return;
   if(pumpLottie){pumpLottie.destroy();pumpLottie=null;}
-  pumpPlaying=false;
   if(typeof window.lottie?.loadAnimation!=="function"){
     node.closest(".pump-illustration")?.querySelector(".pump-fallback")?.removeAttribute("hidden");
-
     return;
   }
+  // The exact uploaded animation runs automatically: no hover, click, or tap.
+  // The visual is the only animation on the StationDesk login screen.
   const instance=window.lottie.loadAnimation({
-    container:node,renderer:"svg",loop:false,autoplay:false,
+    container:node,renderer:"svg",loop:true,autoplay:false,
     path:"./fuel-pump-lottie.json",
     rendererSettings:{preserveAspectRatio:"xMidYMid meet"}
   });
@@ -220,31 +204,27 @@ function initializePumpLottie(){
     if(!node.isConnected)return;
     const svg=node.querySelector("svg");
     if(svg){
-      // Crop only the empty composition margins, not the uploaded artwork.
       svg.setAttribute("viewBox","430 60 950 1000");
       svg.setAttribute("preserveAspectRatio","xMidYMid meet");
     }
-    animateUploadedPump();
-  });
-  instance.addEventListener("complete",()=>{
-    if(!node.isConnected)return;
-    pumpPlaying=false;
-    updatePumpControl();
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+      instance.goToAndStop(Math.max(0,instance.totalFrames-1),true);
+    }else{
+      instance.play();
+    }
   });
   const showFailure=()=>{
     if(!node.isConnected)return;
     node.closest(".pump-illustration")?.querySelector(".pump-fallback")?.removeAttribute("hidden");
-
   };
   instance.addEventListener("data_failed",showFailure);
   instance.addEventListener("error",showFailure);
 }
 
-
 function render() {
   const app=document.getElementById("app");
   if(!state.user){app.innerHTML=loginView();initializePumpLottie();return;}
-  if(pumpLottie){pumpLottie.destroy();pumpLottie=null;pumpPlaying=false;}
+  if(pumpLottie){pumpLottie.destroy();pumpLottie=null;}
   const tabs={overview:overviewView,reports:reportsView,approvals:approvalsView,alerts:alertsView,team:teamView,settings:aboutView};
   const view=(tabs[state.tab]||overviewView)();
   const menu=navItems().map(([id,symbol,label])=>`<button type="button" class="${state.tab===id?"active":""}" data-action="navigate" data-tab="${id}" ${state.tab===id?'aria-current="page"':""}><span>${uiIcon(symbol)}</span>${esc(label)}</button>`).join("");
@@ -259,13 +239,7 @@ function actions(event) {
   if(!button)return;
   const action=button.dataset.action;
   if(action==="close-overlay" && event.target!==button)return;
-  if(action==="pump-demo"){
-    if(!animateUploadedPump()){
-
-    }
-    return;
-  }
-  if(action==="show-password"){
+if(action==="show-password"){
     const password=button.closest(".login-password")?.querySelector('input[name="password"]');
     if(!password)return;
     const revealed=password.type==="password";password.type=revealed?"text":"password";
@@ -337,11 +311,6 @@ function start() {
   const app=document.getElementById("app");
   app.addEventListener("click",actions);
   app.addEventListener("submit",forms);
-  app.addEventListener("pointerover",event=>{
-    if(state.user || pumpPlaying || !pumpLottie?.isLoaded || event.pointerType!=="mouse")return;
-    const button=event.target.closest('[data-action="pump-demo"]');
-    if(button && !button.contains(event.relatedTarget))animateUploadedPump();
-  });
   app.addEventListener("input",event=>{
     if(event.target.id!=="report-search")return;
     const p=event.target.selectionStart;

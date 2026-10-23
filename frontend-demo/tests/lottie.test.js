@@ -34,16 +34,18 @@ test("login uses the full Lottie player for the uploaded masked artwork",()=>{
   assert.match(html,/src="\.\/vendor\/lottie\.min\.js"/);
   assert.match(js,/path:"\.\/fuel-pump-lottie\.json"/);
   assert.match(js,/prefers-reduced-motion/);
-  assert.match(js,/animateUploadedPump\(\)/);
+  assert.match(js,/loop:true,autoplay:false/);
+  assert.match(js,/instance\.play\(\)/);
   assert.doesNotMatch(js,/pump-meter|18%|86%/);
   const css=fs.readFileSync(path.join(root,"login-portal.css"),"utf8");
   assert.doesNotMatch(css,/pump-meter|pump-percent|pump-content|pump-instruction/);
   assert.doesNotMatch(js,/pump-meter|pump-percent|pump-content|pump-instruction|18%|86%/);
   assert.match(css,/width:min\(100%,390px\)/);
   assert.match(css,/animation: none !important/);
-  assert.match(js,/data-action="pump-demo"/);
+  assert.doesNotMatch(js,/data-action="pump-demo"|pointerover|animateUploadedPump|pumpPlaying/);
+  assert.match(js,/class="fuel-demo" role="img"/);
   assert.match(js,/id="pump-lottie-canvas"/);
-  assert.match(js,/animateUploadedPump\(\)/);
+  assert.match(css,/pointer-events:none/);
 });
 
 test("hero typography matches the enterprise workspace font without changing pump animation",()=>{

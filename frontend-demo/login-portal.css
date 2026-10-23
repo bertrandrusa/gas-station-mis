@@ -233,22 +233,9 @@
   display:block;
   text-align:center;
   border:0;
-  border-radius:12px;
   background:transparent;
   box-shadow:none;
-  cursor:pointer;
-  -webkit-tap-highlight-color:transparent;
-}
-.station-portal .fuel-demo:hover,
-.station-portal .fuel-demo:active {
-  background:transparent;
-  border:0;
-  box-shadow:none;
-  filter:none;
-}
-.station-portal .fuel-demo:focus-visible {
-  outline:2px solid #d8eaff;
-  outline-offset:3px;
+  pointer-events:none; /* Decorative visual, not a button. */
 }
 .station-portal .pump-illustration {
   display:block;
