@@ -1,0 +1,286 @@
+/* StationDesk premium station portal — selected Option C.
+   Fuel-pump animation is user-triggered only; nothing runs in a loop.
+   Background: original vector forecourt; no third-party assets. */
+.login-shell.station-portal {
+  --portal-blue: #2563eb;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(390px,500px);
+  align-items: stretch;
+  gap: 0;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #102944 url("./forecourt-scene.svg") center 55% / cover no-repeat;
+}
+.login-shell.station-portal::before {
+  content: "";
+  z-index: 0;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,rgba(5,21,39,.90) 0%,rgba(8,29,51,.79) 34%,rgba(8,29,51,.48) 61%,rgba(8,28,55,.73) 100%);
+  pointer-events: none;
+}
+.station-portal .login-hero {
+  min-height: 640px;
+  height: auto;
+  position: relative;
+  z-index:1;
+  overflow: visible;
+  padding: clamp(24px,3vw,42px) 24px clamp(34px,4vw,64px) clamp(26px,4.3vw,74px);
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  background: transparent;
+  border: 0;
+}
+.station-portal .login-hero::after {display:none}
+.station-portal .brand {align-items:center;gap:11px;font-size:24px;font-weight:650;letter-spacing:-.035em;color:white}
+.station-portal .brand-mark {
+  width:41px;height:41px;flex:0 0 41px;display:grid;place-items:center;
+  background:#2563eb;border:1px solid #72b1ff6d;border-radius:10px;
+  box-shadow:0 8px 22px #06192a35;color:#fff;
+}
+.station-portal .brand-mark .ui-icon{width:21px;height:21px}
+.station-portal .brand-dot{color:#fff}
+.station-portal .brand-subtitle{
+  color:#c6d8ed;letter-spacing:.105em;font-size:10px;font-weight:500;
+  margin-top:6px;text-transform:uppercase;white-space:normal;
+}
+.station-portal .login-message {
+  max-width:620px;
+  margin: 50px 0 8px;
+  padding:0;
+  position:relative;
+  z-index:1;
+}
+.station-portal .login-message .eyebrow {
+  display:flex;align-items:center;gap:11px;
+  margin:0 0 20px;
+  color:#c6d8ed;font-size:11px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+}
+.station-portal .login-message .eyebrow::before{
+  content:"";display:block;width:43px;height:3px;border-radius:2px;background:#77c1ff;
+}
+.station-portal .login-message h1 {
+  max-width:650px;
+  color:#fff;
+  font-size:clamp(38px,4.4vw,65px);
+  font-weight:730;
+  letter-spacing:-.05em;
+  line-height:1.09;
+  margin:0 0 20px;
+}
+.station-portal .login-message h1 em{color:#c7e4ff;font-style:normal}
+.station-portal .login-message p {
+  max-width:445px;
+  color:#d2e0ed;font-size:15px;line-height:1.6;margin:0;
+}
+.station-portal .hero-footer{
+  position:relative;z-index:1;
+  margin-top:16px;display:flex;align-items:center;gap:9px;
+  color:#d2e3f0;font-size:11px;font-weight:450;
+}
+.station-portal .hero-footer .pulse{background:#7dceae;box-shadow:0 0 0 3px #7dceae22;animation:none}
+.station-portal .login-form-side {
+  position:relative;
+  z-index:2;
+  border:0;
+  background:transparent;
+  padding:24px clamp(26px,3vw,50px) 24px 0;
+  display:flex;align-items:center;justify-content:center;
+}
+.station-portal .auth-card {
+  width:100%;max-width:452px;
+  padding:clamp(25px,2.75vw,42px);
+  background:rgba(255,255,255,.985);
+  border:1px solid #ffffffdc;
+  border-radius:15px;
+  box-shadow:0 24px 85px rgba(6,24,46,.38),0 2px 9px #10294422;
+  color:#152b44;
+}
+.station-portal .auth-card .pill {
+  margin:0 0 18px;
+  padding:6px 10px;
+  display:inline-flex;
+  align-items:center;
+  background:#f0f6ff;
+  border:1px solid #d8e8fb;
+  border-radius:5px;
+  color:#225a9c;
+  font-size:11px;font-weight:650;letter-spacing:.025em;text-transform:none;
+}
+.station-portal .auth-card h2{
+  color:#0e2a47;
+  font-size:clamp(27px,2.6vw,34px);
+  font-weight:740;letter-spacing:-.045em;
+  margin:0 0 8px;
+}
+.station-portal .auth-card .subcopy{color:#6b819a;font-size:12px;line-height:1.7;margin:0 0 24px}
+.station-portal .role-switch{
+  background:#f4f8fc;border:1px solid #e0e9f2;
+  border-radius:7px;padding:4px;gap:3px;margin:0 0 20px;
+}
+.station-portal .role-switch button {
+  color:#607a93;font-size:12px;font-weight:550;min-height:34px;border-radius:5px;
+}
+.station-portal .role-switch button.active{
+  color:#1b5da7;background:white;border:1px solid #d6e5f3;
+  box-shadow:0 1px 5px #294b6c12;
+}
+.station-portal .field{margin:0 0 16px}
+.station-portal .field>span{
+  display:block;margin:0 0 7px;font-size:12px;
+  font-weight:600;color:#29415c;
+}
+.station-portal .field>input,
+.station-portal .login-password input {
+  display:block;width:100%;height:45px;min-height:45px;
+  padding:11px 14px;
+  background:#fbfdff;
+  color:#183550;
+  border:1px solid #cfdeeb;
+  border-radius:7px;
+  font-size:13px;font-weight:450;
+  outline:none;box-shadow:none;
+}
+.station-portal .field input:hover{border-color:#9ebad2}
+.station-portal .field input:focus{
+  border-color:#4584d2;
+  outline:2px solid #92c1ff8c;outline-offset:1px;
+  box-shadow:none;
+}
+.station-portal .login-password{position:relative}
+.station-portal .login-password input{padding-right:75px}
+.station-portal .password-toggle{
+  position:absolute;right:9px;top:50%;transform:translateY(-50%);
+  background:transparent;border:0;border-radius:5px;
+  padding:8px 10px;color:#2b64aa;cursor:pointer;
+  font-size:11px;font-weight:650;
+}
+.station-portal .password-toggle:hover{background:#eef6ff}
+.station-portal .auth-card .btn.wide{
+  margin-top:6px;
+  min-height:47px;width:100%;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  font-size:13px;font-weight:700;
+  border-radius:7px;
+  background:#2563eb;color:white;border:1px solid #2563eb;
+  box-shadow:0 4px 10px #2563eb2b;
+  transition:background-color .16s ease,box-shadow .16s ease,transform .16s ease;
+}
+.station-portal .auth-card .btn.wide:hover{
+  background:#1d4ed8;border-color:#1d4ed8;
+  transform:translateY(-1px);
+  box-shadow:0 8px 17px #2563eb33;
+}
+.station-portal .auth-card .btn.wide:active{transform:translateY(0);box-shadow:0 2px 7px #2563eb22}
+.station-portal .auth-card .error-line{margin:8px 0 11px;font-size:11px;border-radius:5px}
+.station-portal .auth-card .auth-hint{
+  padding:12px 13px;margin:20px 0 13px;
+  border:1px solid #dce7f2;border-radius:6px;
+  border-left:3px solid #5595d9;
+  background:#f7faff;color:#66819a;
+  font-size:11px;line-height:1.75;
+}
+.station-portal .auth-card .auth-hint b{color:#2e587e;font-size:11px;font-weight:700}
+.station-portal .auth-card .auth-hint code{color:#285882;background:#e9f1fa;font-size:11px}
+.station-portal .auth-card .auth-notice{
+  padding-top:12px;margin:10px 0 0;
+  border-top:1px solid #e4edf5;
+  color:#8197aa;font-size:10px;line-height:1.55;
+}
+.station-portal .auth-card .auth-notice b{color:#5b7189;font-weight:700}
+
+/* Interactive animated fuel-pump demo; activation only on click/tap. */
+.station-portal .fuel-demo {
+  margin-top:31px;
+  width:min(100%,417px);
+  min-height:114px;
+  position:relative;
+  display:grid;grid-template-columns:81px 1fr;align-items:center;gap:15px;
+  padding:13px 17px;
+  border:1px solid #9bc3eb6e;
+  border-radius:12px;
+  background:linear-gradient(135deg,#112f4ecf,#16416cba);
+  color:#edf6ff;
+  box-shadow:0 10px 27px rgba(4,22,40,.18);
+  text-align:left;
+  cursor:pointer;
+}
+.station-portal .fuel-demo:focus-visible{outline:2px solid #d8eaff;outline-offset:4px}
+.station-portal .fuel-demo:hover{background:linear-gradient(135deg,#143758ec,#1c4f7fcb);border-color:#a1d0f2a3}
+.station-portal .pump-illustration{display:grid;place-items:center;height:93px;width:79px;position:relative}
+.station-portal .pump-illustration svg{width:76px;height:92px;overflow:visible}
+.station-portal .pump-nozzle{
+  transform-origin:75px 31px;
+  transition:transform .68s cubic-bezier(.19,.84,.27,1);
+}
+.station-portal .fuel-demo:hover .pump-nozzle{transform:rotate(-9deg) translate(-1px,-1px)}
+.station-portal .fuel-demo.is-fueled .pump-nozzle{transform:rotate(-16deg) translate(-2px,-2px)}
+.station-portal .pump-ui{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.station-portal .pump-ui strong{font-size:12px;color:#fff;font-weight:700}
+.station-portal .pump-percent{
+  font-size:11px;font-variant-numeric:tabular-nums;
+  color:#bfdeff;font-weight:700;
+}
+.station-portal .pump-meter{
+  display:block;width:100%;height:6px;
+  background:#e4f2ff29;border-radius:8px;overflow:hidden;
+  box-shadow:inset 0 0 0 1px #dfedff15;
+}
+.station-portal .pump-meter-fill{
+  display:block;height:100%;width:18%;
+  background:linear-gradient(90deg,#67b1ff,#c1ecff);
+  border-radius:inherit;
+  transition:width 1150ms cubic-bezier(.18,.68,.32,1);
+}
+.station-portal .fuel-demo.is-fueled .pump-meter-fill{width:86%}
+.station-portal .pump-instruction{
+  display:block;margin-top:9px;
+  font-size:10px;color:#cfdef0;line-height:1.4;
+}
+.station-portal .fuel-demo.is-fueled .pump-instruction{color:#c0f2dc}
+.station-portal .pump-visual-caption{font-size:9px;color:#adc2d8;margin-top:6px;display:block}
+
+/* Honor reduced-motion and keep the authentication card motionless. */
+@media (prefers-reduced-motion:reduce){
+ .station-portal .pump-nozzle,.station-portal .pump-meter-fill,.station-portal .btn.wide{transition:none!important}
+ .station-portal .btn.wide:hover{transform:none!important}
+}
+@media(max-width:1100px) {
+ .login-shell.station-portal{grid-template-columns:minmax(0,1fr) minmax(365px,480px)}
+ .station-portal .login-hero{padding-left:30px;padding-right:12px}
+ .station-portal .login-form-side{padding-right:25px}
+ .station-portal .login-message h1{font-size:clamp(36px,4vw,53px)}
+ .station-portal .login-message p{font-size:13px}
+}
+@media(max-width:810px){
+ .login-shell.station-portal{grid-template-columns:1fr;gap:0;overflow:visible;min-height:100svh;background-position:38% center}
+ .login-shell.station-portal::before{background:linear-gradient(180deg,#0a2139bb 0%,#0a2139b8 46%,#0a2139ef 100%)}
+ .station-portal .login-hero{min-height:auto;padding:25px 22px 12px;gap:17px}
+ .station-portal .login-message{margin:27px 0 5px}
+ .station-portal .login-message h1{font-size:clamp(34px,7vw,48px);margin-bottom:10px}
+ .station-portal .login-message p{font-size:13px}
+ .station-portal .fuel-demo{margin-top:17px}
+ .station-portal .login-form-side{padding:19px 20px 32px}
+ .station-portal .auth-card{max-width:560px;padding:30px}
+ .station-portal .hero-footer{display:none}
+}
+@media(max-width:450px){
+ .station-portal .login-hero{padding:20px 17px 0}
+ .station-portal .login-message{margin:22px 0 4px}
+ .station-portal .login-message .eyebrow{font-size:9px;letter-spacing:.10em;margin-bottom:12px}
+ .station-portal .login-message h1{font-size:33px}
+ .station-portal .login-message p{font-size:12px}
+ .station-portal .fuel-demo{min-height:88px;margin-top:15px;grid-template-columns:60px 1fr;padding:9px 12px;gap:10px}
+ .station-portal .pump-illustration{width:60px;height:70px}
+ .station-portal .pump-illustration svg{width:56px;height:70px}
+ .station-portal .pump-ui strong{font-size:11px}
+ .station-portal .pump-instruction{font-size:9px}
+ .station-portal .login-form-side{padding:16px 13px 25px}
+ .station-portal .auth-card{padding:24px 21px;border-radius:12px}
+ .station-portal .auth-card h2{font-size:26px}
+}

@@ -9,7 +9,7 @@ const stations = [
 ];
 const core = window.StationDemoCore;
 const state = {
-  user:null, loginRole:"manager", error:"", tab:"overview", station:"central", filter:"All", query:"",
+  user:null, loginRole:"manager", pumpFilled:false, error:"", tab:"overview", station:"central", filter:"All", query:"",
   modal:null, toast:"", reports:seedReports(), alerts:seedAlerts()
 };
 
@@ -69,28 +69,48 @@ function navItems() {
 
 function loginView() {
   const acct=accounts[state.loginRole];
-  return `<div class="login-shell">
-    <section class="login-hero" aria-label="About StationFlow">
+  return `<div class="login-shell station-portal">
+    <section class="login-hero" aria-label="StationDesk gas station operations">
       <div class="brand"><span class="brand-mark">${icon("grid")}</span><span>Station<span class="brand-dot">Desk</span><small class="brand-subtitle">GAS STATION MIS</small></span></div>
-      <div class="login-message"><div class="eyebrow">Station operations workspace</div>
-        <h1>Your station,<br><em>under control.</em></h1>
-        <p>Organize shift reports, approvals, staff, and operations in one flexible management dashboard.</p>
-        <div class="hero-cards"><div class="hero-card"><b>02</b><span>Sample locations</span></div><div class="hero-card"><b>06</b><span>Modules</span></div><div class="hero-card"><b>∞</b><span>Ways to monitor</span></div></div>
+      <div class="login-message"><div class="eyebrow">Connected station operations</div>
+        <h1>Built for the way<br><em>stations work.</em></h1>
+        <p>Manage people, shift reporting, and station oversight from one dependable platform.</p>
+        <button type="button" class="fuel-demo ${state.pumpFilled?"is-fueled":""}" data-action="pump-demo" aria-pressed="${state.pumpFilled}" aria-label="Run simulated fuel pump animation; no physical pumps are connected">
+  <span class="pump-illustration" aria-hidden="true">
+    <svg viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="12" y="5" width="55" height="94" rx="7" fill="#eaf4ff" stroke="#83b6e5" stroke-width="2"/>
+      <path d="M13 14a8 8 0 0 1 8-8h37a8 8 0 0 1 8 8v11H13V14Z" fill="#236cb6"/>
+      <rect x="20" y="33" width="39" height="29" rx="4" fill="#173c64"/>
+      <rect x="25" y="38" width="29" height="17" rx="2" fill="#8ed2fc"/>
+      <path d="M29 43h17M29 48h10" stroke="#205379" stroke-width="2" stroke-linecap="round"/>
+      <rect x="25" y="70" width="29" height="14" rx="3" fill="#357ebd"/>
+      <path d="M65 35c19 3 18 28 11 41" stroke="#bddbfa" stroke-width="5" stroke-linecap="round"/>
+      <g class="pump-nozzle"><path d="M77 53v17" stroke="#eff7ff" stroke-width="7" stroke-linecap="round"/><path d="M77 51h9v11" stroke="#93c7ef" stroke-width="4" stroke-linecap="round"/></g>
+      <rect x="6" y="97" width="68" height="7" rx="3" fill="#3578b0"/>
+    </svg>
+  </span>
+  <span class="pump-content">
+    <span class="pump-ui"><strong>Interactive fuel pump</strong><span class="pump-percent" data-pump-level>${state.pumpFilled?"86%":"18%"}</span></span>
+    <span class="pump-meter" role="progressbar" aria-label="Simulated fuel gauge" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${state.pumpFilled?86:18}"><span class="pump-meter-fill"></span></span>
+    <span class="pump-instruction" data-pump-label>${state.pumpFilled?"Simulation complete · tap to reset":"Tap to simulate refueling"}</span>
+    <span class="pump-visual-caption">Visual demo only · not connected to fuel pumps</span>
+  </span>
+</button>
       </div>
-      <div class="hero-footer"><span class="pulse"></span> Public demo · Fictional data</div>
+      <div class="hero-footer"><span class="pulse"></span> Authorized preview · Fictional data only</div>
     </section>
     <section class="login-form-side"><div class="auth-card">
-      <div class="pill">Interactive MIS demo</div><h2>Welcome to StationDesk</h2>
-      <p class="subcopy">Choose a demonstration role to explore the MIS interface and reporting workflows.</p>
-      <div class="role-switch" aria-label="Select demo role">
-        <button type="button" data-action="role" data-role="manager" class="${state.loginRole==="manager"?"active":""}" aria-pressed="${state.loginRole==="manager"}">♙ &nbsp;Manager</button>
-        <button type="button" data-action="role" data-role="employee" class="${state.loginRole==="employee"?"active":""}" aria-pressed="${state.loginRole==="employee"}">◈ &nbsp;Employee</button>
+      <div class="pill">StationDesk · Demonstration portal</div><h2>Welcome back</h2>
+      <p class="subcopy">Sign in to explore your station management workspace.</p>
+      <div class="role-switch" aria-label="Select demonstration account">
+        <button type="button" data-action="role" data-role="manager" class="${state.loginRole==="manager"?"active":""}" aria-pressed="${state.loginRole==="manager"}">Manager</button>
+        <button type="button" data-action="role" data-role="employee" class="${state.loginRole==="employee"?"active":""}" aria-pressed="${state.loginRole==="employee"}">Employee</button>
       </div>
       <form id="login-form">
-        <label class="field"><span>Demo email</span><input type="email" name="email" autocomplete="off" required value="${esc(acct.email)}"></label>
-        <label class="field"><span>Demo password</span><input type="password" name="password" autocomplete="off" required placeholder="Enter demo password"></label>
+        <label class="field"><span>Work email (demo)</span><input type="email" name="email" autocomplete="off" required value="${esc(acct.email)}"></label>
+        <label class="field"><span>Password (demo)</span><span class="login-password"><input type="password" name="password" autocomplete="off" required placeholder="Enter demo password"><button type="button" class="password-toggle" data-action="show-password" aria-label="Show password" aria-pressed="false">Show</button></span></label>
         ${state.error?`<div class="error-line" role="alert">${esc(state.error)}</div>`:""}
-        <button class="btn wide" type="submit">Enter workspace <span aria-hidden="true">→</span></button>
+        <button class="btn wide" type="submit">Sign in to StationDesk <span aria-hidden="true">→</span></button>
       </form>
       <div class="auth-hint"><b>Try the ${state.loginRole==="manager"?"manager":"employee"} demo</b><br>Email: <code>${esc(acct.email)}</code><br>Password: <code>Demo123!</code></div>
       <p class="auth-notice"><b>Demo login only.</b> These public sample credentials do not protect private information. Never enter a real password here.</p>
@@ -193,6 +213,27 @@ function actions(event) {
   if(!button)return;
   const action=button.dataset.action;
   if(action==="close-overlay" && event.target!==button)return;
+  if(action==="pump-demo"){
+    state.pumpFilled=!state.pumpFilled;
+    button.classList.toggle("is-fueled",state.pumpFilled);
+    button.setAttribute("aria-pressed",String(state.pumpFilled));
+    const meter=button.querySelector('[role="progressbar"]');
+    if(meter)meter.setAttribute("aria-valuenow",String(state.pumpFilled?86:18));
+    const value=button.querySelector("[data-pump-level]");
+    if(value)value.textContent=state.pumpFilled?"86%":"18%";
+    const caption=button.querySelector("[data-pump-label]");
+    if(caption)caption.textContent=state.pumpFilled?"Simulation complete · tap to reset":"Tap to simulate refueling";
+    return;
+  }
+  if(action==="show-password"){
+    const password=button.closest(".login-password")?.querySelector('input[name="password"]');
+    if(!password)return;
+    const revealed=password.type==="password";password.type=revealed?"text":"password";
+    button.textContent=revealed?"Hide":"Show";
+    button.setAttribute("aria-label",revealed?"Hide password":"Show password");
+    button.setAttribute("aria-pressed",String(revealed));
+    return;
+  }
   if(action==="role"){state.loginRole=button.dataset.role;state.error="";render();return;}
   if(action==="logout"){state.user=null;state.loginRole="manager";state.tab="overview";state.error="";state.query="";state.modal=null;state.toast="";render();return;}
   if(!state.user)return;

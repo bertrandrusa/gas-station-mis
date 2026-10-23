@@ -34,6 +34,11 @@ jobs:
           test -s frontend-demo/index.html
           test -s frontend-demo/styles.css
           test -s frontend-demo/workspace.css
+          test -s frontend-demo/login-portal.css
+          test -s frontend-demo/forecourt-scene.svg
+          grep -q 'href="./login-portal.css"' frontend-demo/index.html
+          grep -q 'data-action="pump-demo"' frontend-demo/app.js
+          grep -q 'prefers-reduced-motion' frontend-demo/login-portal.css
           grep -q "ADS-inspired" frontend-demo/workspace.css
           grep -q -- "--ds-primary:#2563eb" frontend-demo/workspace.css
           grep -q "UI_ICONS" frontend-demo/app.js

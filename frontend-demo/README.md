@@ -60,3 +60,13 @@ The live StationDesk demo uses a custom **blue and white** business theme while 
 - Report status colors: green (approved), amber (pending), red (returned / danger)
 
 Only presentation changed; sample users, data, roles, reports and the API-disconnected demo remain as before.
+
+## Selected login page — premium station portal with fuel-pump interaction
+
+The public landing/login page now follows **Option C: Premium Station Portal** from the design review. It shows an original vector forecourt illustration, navy photographic-style overlay, a floating white sign-in card, and an interactive fuel-pump graphic on the left.
+
+- Click or tap the **Interactive fuel pump** control to simulate a one-shot 18% → 86% tank fill and small nozzle movement; tap again to reset. Hover moves the nozzle slightly. **This is visual-only**, not connected to any real fuel pump, database, POS, or ERPNext service.
+- All animation is user-triggered. `prefers-reduced-motion` disables nonessential transitions.
+- The **Show / Hide** password toggle is functional. The Manager and Employee demo accounts, simulated login, dashboards, approvals, and reports remain unchanged.
+- The background uses original `forecourt-scene.svg` and the additional styling lives in `login-portal.css`. No Lottie or third-party runtime is necessary, and no external assets or credentials are loaded.
+- The public demo login is not actual authentication; real access must be provided by a secured Frappe backend.
