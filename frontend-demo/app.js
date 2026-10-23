@@ -1,7 +1,7 @@
 "use strict";
 const accounts = {
-  manager: { role:"manager", name:"Aline Uwase", title:"Station Manager", email:"manager@stationflow.demo", password:"Demo123!" },
-  employee: { role:"employee", name:"Eric N.", title:"Shift Supervisor", email:"employee@stationflow.demo", password:"Demo123!" }
+  manager: { role:"manager", name:"Rúben Dias", title:"Station Manager", email:"manager@stationflow.demo", password:"Demo123!" },
+  employee: { role:"employee", name:"Erling Haaland", title:"Shift Supervisor", email:"employee@stationflow.demo", password:"Demo123!" }
 };
 const stations = [
   { id:"central", name:"Kigali Central", location:"Kigali, Rwanda" },
@@ -24,12 +24,12 @@ function dayAt(daysAgo) {
 
 function seedReports() {
   return [
-    {id:"SR-1038",station:"central",date:dayAt(0),shift:"Morning",owner:"Eric N.",ownerRole:"employee",opening:100000,cash:289000,momo:112000,card:82000,expenses:24000,withdrawn:245000,counted:119500,status:"Pending",notes:"Morning shift reconciled; receipts ready for review."},
-    {id:"SR-1037",station:"central",date:dayAt(0),shift:"Evening",owner:"Claudine M.",ownerRole:"other",opening:95000,cash:326000,momo:148000,card:97000,expenses:17000,withdrawn:302000,counted:102000,status:"Approved",notes:"Evening shift balanced."},
-    {id:"SR-1036",station:"central",date:dayAt(1),shift:"Morning",owner:"Eric N.",ownerRole:"employee",opening:86000,cash:198000,momo:89000,card:69000,expenses:11000,withdrawn:193000,counted:80000,status:"Returned",returnReason:"Please check the counted cash.",notes:"Cash receipts pending verification."},
-    {id:"SR-1035",station:"central",date:dayAt(1),shift:"Evening",owner:"Claudine M.",ownerRole:"other",opening:95000,cash:244000,momo:128000,card:88000,expenses:9000,withdrawn:220000,counted:110000,status:"Approved",notes:"All payments reconciled."},
-    {id:"SR-1034",station:"remera",date:dayAt(0),shift:"Morning",owner:"Kevin R.",ownerRole:"other",opening:75000,cash:201000,momo:82000,card:60000,expenses:15000,withdrawn:177000,counted:84000,status:"Pending",notes:"Awaiting management approval."},
-    {id:"SR-1033",station:"remera",date:dayAt(1),shift:"Evening",owner:"Diane K.",ownerRole:"other",opening:92000,cash:235000,momo:109000,card:95000,expenses:13000,withdrawn:199000,counted:115000,status:"Approved",notes:"Shift closed."}
+    {id:"SR-1038",station:"central",date:dayAt(0),shift:"Morning",owner:"Erling Haaland",ownerRole:"employee",opening:100000,cash:289000,momo:112000,card:82000,expenses:24000,withdrawn:245000,counted:119500,status:"Pending",notes:"Morning shift reconciled; receipts ready for review."},
+    {id:"SR-1037",station:"central",date:dayAt(0),shift:"Evening",owner:"Phil Foden",ownerRole:"other",opening:95000,cash:326000,momo:148000,card:97000,expenses:17000,withdrawn:302000,counted:102000,status:"Approved",notes:"Evening shift balanced."},
+    {id:"SR-1036",station:"central",date:dayAt(1),shift:"Morning",owner:"Erling Haaland",ownerRole:"employee",opening:86000,cash:198000,momo:89000,card:69000,expenses:11000,withdrawn:193000,counted:80000,status:"Returned",returnReason:"Please check the counted cash.",notes:"Cash receipts pending verification."},
+    {id:"SR-1035",station:"central",date:dayAt(1),shift:"Evening",owner:"Phil Foden",ownerRole:"other",opening:95000,cash:244000,momo:128000,card:88000,expenses:9000,withdrawn:220000,counted:110000,status:"Approved",notes:"All payments reconciled."},
+    {id:"SR-1034",station:"remera",date:dayAt(0),shift:"Morning",owner:"Joško Gvardiol",ownerRole:"other",opening:75000,cash:201000,momo:82000,card:60000,expenses:15000,withdrawn:177000,counted:84000,status:"Pending",notes:"Awaiting management approval."},
+    {id:"SR-1033",station:"remera",date:dayAt(1),shift:"Evening",owner:"Rayan Cherki",ownerRole:"other",opening:92000,cash:235000,momo:109000,card:95000,expenses:13000,withdrawn:199000,counted:115000,status:"Approved",notes:"Shift closed."}
   ];
 }
 
@@ -91,6 +91,7 @@ function loginView() {
         <button class="btn wide" type="submit">Sign in to dashboard <span aria-hidden="true">→</span></button>
       </form>
       <div class="auth-hint"><b>Try the ${state.loginRole==="manager"?"manager":"employee"} demo</b><br>Email: <code>${esc(acct.email)}</code><br>Password: <code>Demo123!</code></div>
+      <p class="auth-notice"><b>Prefer a proper MIS layout?</b> <a href="./designs.html">Explore 4 dashboard designs →</a></p>
       <p class="auth-notice"><b>Demo login only.</b> These public sample credentials do not protect private information. Never enter a real password here.</p>
     </div></section>
   </div>`;
@@ -152,7 +153,7 @@ function alertsView() {
 
 function teamView() {
   if(state.user.role!=="manager")return `<section class="card info-card">Manager view only.</section>`;
-  const team=state.station==="central"?[["AU","Aline Uwase","Station Manager"],["EN","Eric N.","Shift Supervisor"],["CM","Claudine M.","Cashier"],["JP","Jean P.","Forecourt Attendant"]]:[["AU","Aline Uwase","Station Manager"],["KR","Kevin R.","Shift Supervisor"],["DK","Diane K.","Cashier"]];
+  const team=state.station==="central"?[["RD","Rúben Dias","Station Manager"],["EH","Erling Haaland","Shift Supervisor"],["PF","Phil Foden","Cashier"],["JD","Jérémy Doku","Forecourt Attendant"]]:[["RD","Rúben Dias","Station Manager"],["JG","Joško Gvardiol","Shift Supervisor"],["RC","Rayan Cherki","Cashier"]];
   return `${sectionTitle("Station team","Illustrative staff assignments for "+stationName(state.station)+".")}<div class="team-grid">${team.map(([init,name,title])=>`<article class="card team-member"><span class="avatar">${init}</span><div><h3>${esc(name)}</h3><p>${esc(title)}</p></div></article>`).join("")}</div><p class="footer-note">Employee management and real identities are handled by Frappe HR in the production MIS.</p>`;
 }
 

@@ -21,3 +21,11 @@ The expected URL after deployment is https://bertrandrusa.github.io/gas-station-
 ## Production boundaries
 
 This demo is NOT the actual ERPNext system. Role permissions and sign-in are simulated entirely in the browser, not secure. The actual Frappe app lives in the gas_station_mis directory. Real authentication, employee records, transaction data, authorization and database access MUST remain on a secured backend.
+
+## Fictional demonstration team
+
+The sample station team and report authors use the names of Manchester City footballers for fun. These are **fictional staff assignments**: no real player works at these stations, and this demo is not affiliated with or endorsed by Manchester City FC. No real employee or footballer information is collected.
+
+## Other dashboard concepts
+
+Open [MIS design gallery](./designs.html) to compare four possible interface directions before changing the main frontend.

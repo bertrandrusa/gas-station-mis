@@ -114,3 +114,9 @@ Offline tests cover metadata, calculations and authorization contracts; the Benc
 ## License
 
 MIT for this custom app code (see LICENSE). The ERPNext and HRMS upstream projects have **their own licenses**; installing this app does not change those obligations.
+
+## Visual dashboard design options
+
+Compare four clickable MIS prototype layouts in the [design gallery](./frontend-demo/designs.html): Classic Enterprise MIS, Operations Command Center, Executive Analytics, and Fuel Station Workbench. These are *alternatives* to the existing demo, not a permanent redesign until a style is selected.
+
+Manchester City players are used as fictional sample names in the demo; this software is not affiliated with the club.
