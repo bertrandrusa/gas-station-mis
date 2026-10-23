@@ -9,7 +9,7 @@
 }
 
 /* StationDesk premium station portal — selected Option C.
-   Fuel-pump animation is user-triggered only; nothing runs in a loop.
+   Fuel-pump animation autoplays and loops; no hover or tap activation.
    Background: original vector forecourt; no third-party assets. */
 .login-shell.station-portal {
   --portal-blue: #2563eb;
