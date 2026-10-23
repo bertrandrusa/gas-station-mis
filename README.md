@@ -117,6 +117,6 @@ MIT for this custom app code (see LICENSE). The ERPNext and HRMS upstream projec
 
 ## Public demo frontend
 
-The [StationDesk public frontend](./frontend-demo/) uses an Appsmith-inspired workspace style with a left navigation rail, widget cards, compact data tables and reporting tools. It is a custom HTML/CSS/JavaScript implementation, **not an Appsmith project** and not affiliated with Appsmith.
+The [StationDesk public frontend](./frontend-demo/) uses an Appsmith Design System-inspired visual language across its fonts, 36px/24px button sizes, inputs, SVG icons, navigation, tables, dialog forms, semantic statuses and gray/orange theme. It is a custom HTML/CSS/JavaScript implementation, **not an Appsmith project** and not affiliated with Appsmith.
 
 It preserves the demo Manager / Employee roles, report approvals, station alerts, and fictional Manchester City player names. The Daily reports table supports filtering, searching and exporting sample CSV files. The public demo is not connected to a real Frappe/ERPNext backend; no true authentication or private data is provided.

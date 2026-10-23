@@ -34,6 +34,8 @@ jobs:
           test -s frontend-demo/index.html
           test -s frontend-demo/styles.css
           test -s frontend-demo/workspace.css
+          grep -q "ADS-inspired" frontend-demo/workspace.css
+          grep -q "UI_ICONS" frontend-demo/app.js
           grep -q 'href="./workspace.css"' frontend-demo/index.html
           grep -q 'src="./app.js"' frontend-demo/index.html
   deploy:

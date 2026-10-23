@@ -58,10 +58,12 @@ function statusTag(status) {return `<span class="status ${esc(status.toLowerCase
 
 function stationName(id) {return (stations.find(s=>s.id===id)||stations[0]).name;}
 
+const UI_ICONS={"grid":"<rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/>","file":"<rect x=\"5\" y=\"3\" width=\"14\" height=\"18\" rx=\"2\"/><path d=\"M8 8h8M8 12h8M8 16h5\"/>","check":"<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m8 12 3 3 5-6\"/>","users":"<circle cx=\"9\" cy=\"8\" r=\"3\"/><path d=\"M3 20v-2a6 6 0 0 1 12 0v2M17 6a3 3 0 0 1 0 6M17 14c2 0 4 2 4 4v2\"/>","bell":"<path d=\"M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4\"/>","gear":"<circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M20 10h-2l-1-2 1-2-2-2-2 1-2-1V2h-3v2l-2 1-2-1-2-2-2 2 1 2-1 2H1v3h2l1 2-1 2 2 2 2-1 2 1v2h3v-2l2-1 2 1 2-2-1-2 1-2h2z\"/>","logout":"<path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9\"/>","fuel":"<path d=\"M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M3 21h14M7 7h6v5H7zM16 9h2l3 4v5a2 2 0 0 1-4 0v-4\"/>","trend":"<path d=\"M3 17 10 10l4 4 7-7M15 7h6v6\"/>","plus":"<path d=\"M12 5v14M5 12h14\"/>","download":"<path d=\"M12 3v13m-5-5 5 5 5-5M5 19h14\"/>","search":"<circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-4-4\"/>","clock":"<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l4 2\"/>","alert":"<path d=\"M12 3 2 21h20L12 3ZM12 9v5M12 18h.01\"/>","down":"<path d=\"m6 9 6 6 6-6\"/>","shield":"<path d=\"M12 2 4 6v6c0 5 3 8 8 10 5-2 8-5 8-10V6zM9 12l2 2 4-4\"/>"};
+function icon(name){return '<svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(UI_ICONS[name]||UI_ICONS.grid)+'</svg>';}
 function navItems() {
-  const base=[["overview","▦","Dashboard"],["reports","▤","Daily reports"]];
-  if(state.user.role==="manager"){base.push(["approvals","✓","Approvals"],["team","♙","Employees"]);}
-  base.push(["alerts","⚑","Alerts & notifications"],["settings","⚙","System information"]);
+  const base=[["overview","grid","Dashboard"],["reports","file","Daily reports"]];
+  if(state.user.role==="manager"){base.push(["approvals","check","Approvals"],["team","users","Employees"]);}
+  base.push(["alerts","bell","Alerts & notifications"],["settings","gear","System information"]);
   return base;
 }
 
@@ -69,16 +71,16 @@ function loginView() {
   const acct=accounts[state.loginRole];
   return `<div class="login-shell">
     <section class="login-hero" aria-label="About StationFlow">
-      <div class="brand"><span class="brand-mark">▦</span><span>Station<span class="brand-dot">Desk</span><small class="brand-subtitle">GAS STATION MIS</small></span></div>
-      <div class="login-message"><div class="eyebrow">A SMARTER STATION WORKSPACE</div>
-        <h1>Run your station.<br><em>All in one place.</em></h1>
+      <div class="brand"><span class="brand-mark">${icon("grid")}</span><span>Station<span class="brand-dot">Desk</span><small class="brand-subtitle">GAS STATION MIS</small></span></div>
+      <div class="login-message"><div class="eyebrow">Station operations workspace</div>
+        <h1>Your station,<br><em>under control.</em></h1>
         <p>Organize shift reports, approvals, staff, and operations in one flexible management dashboard.</p>
         <div class="hero-cards"><div class="hero-card"><b>02</b><span>Sample locations</span></div><div class="hero-card"><b>06</b><span>Modules</span></div><div class="hero-card"><b>∞</b><span>Ways to monitor</span></div></div>
       </div>
-      <div class="hero-footer"><span class="pulse"></span> Interactive public product preview · No real business data</div>
+      <div class="hero-footer"><span class="pulse"></span> Public demo · Fictional data</div>
     </section>
     <section class="login-form-side"><div class="auth-card">
-      <div class="pill">✦ INTERACTIVE MIS DEMO</div><h2>Welcome to StationDesk</h2>
+      <div class="pill">Interactive MIS demo</div><h2>Welcome to StationDesk</h2>
       <p class="subcopy">Choose a demonstration role to explore the MIS interface and reporting workflows.</p>
       <div class="role-switch" aria-label="Select demo role">
         <button type="button" data-action="role" data-role="manager" class="${state.loginRole==="manager"?"active":""}" aria-pressed="${state.loginRole==="manager"}">♙ &nbsp;Manager</button>
@@ -96,12 +98,13 @@ function loginView() {
   </div>`;
 }
 
+function uiIcon(name){return icon(name);}
 function sidebarView() {
-  const nav=navItems().map(([key,icon,title])=>`${key==="overview"?"<div class=\"nav-label\">PAGES</div>":key==="approvals"?"<div class=\"nav-label\">WORKFLOWS</div>":key==="alerts"?"<div class=\"nav-label\">MONITOR</div>":key==="settings"?"<div class=\"nav-label\">APP</div>":""}<button class="nav-item ${state.tab===key?"active":""}" data-action="navigate" data-tab="${key}" ${state.tab===key?'aria-current="page"':""}><span class="nav-icon">${icon}</span>${title}${key==="approvals"&&entries().filter(r=>r.status==="Pending").length?`<span class="nav-count">${entries().filter(r=>r.status==="Pending").length}</span>`:""}</button>`).join("");
-  return `<aside class="sidebar"><div class="side-brand"><div class="brand"><span class="brand-mark">▦</span><span>Station<span class="brand-dot">Desk</span><small class="brand-subtitle">GAS STATION MIS</small></span></div></div><div class="side-site"><span class="side-site-label">WORKSPACE · DEMO</span><b>⛽ &nbsp;${esc(stationName(state.station))}</b><small>Operations application <span class="workspace-branch">⌄</span></small></div>
+  const nav=navItems().map(([key,icon,title])=>`${key==="overview"?"<div class=\"nav-label\">Pages</div>":key==="approvals"?"<div class=\"nav-label\">Workflows</div>":key==="alerts"?"<div class=\"nav-label\">Monitor</div>":key==="settings"?"<div class=\"nav-label\">Application</div>":""}<button class="nav-item ${state.tab===key?"active":""}" data-action="navigate" data-tab="${key}" ${state.tab===key?'aria-current="page"':""}><span class="nav-icon">${uiIcon(icon)}</span>${title}${key==="approvals"&&entries().filter(r=>r.status==="Pending").length?`<span class="nav-count">${entries().filter(r=>r.status==="Pending").length}</span>`:""}</button>`).join("");
+  return `<aside class="sidebar"><div class="side-brand"><div class="brand"><span class="brand-mark">${icon("grid")}</span><span>Station<span class="brand-dot">Desk</span><small class="brand-subtitle">GAS STATION MIS</small></span></div></div><div class="side-site"><span class="side-site-label">Demo workspace</span><b>${icon("fuel")} ${esc(stationName(state.station))}</b><small>Operations application <span class="workspace-branch">${icon("down")}</span></small></div>
      <nav aria-label="Main menu">${nav}</nav>
-     <div class="sidebar-bottom"><div class="sidebar-note"><strong>● DEMO WORKSPACE</strong>Explore with fictional data. No real ERPNext system is connected.</div>
-     <div class="side-profile"><span class="avatar">${esc(state.user.name.split(" ").map(x=>x[0]).join(""))}</span><div><b>${esc(state.user.name)}</b><small>${esc(state.user.title)}</small></div><button class="logout" type="button" title="Switch user" aria-label="Sign out" data-action="logout">↪</button></div></div>
+     <div class="sidebar-bottom"><div class="sidebar-note"><strong>Demo workspace</strong>Explore with fictional data. No real ERPNext system is connected.</div>
+     <div class="side-profile"><span class="avatar">${esc(state.user.name.split(" ").map(x=>x[0]).join(""))}</span><div><b>${esc(state.user.name)}</b><small>${esc(state.user.title)}</small></div><button class="logout" type="button" title="Switch user" aria-label="Sign out" data-action="logout">${icon("logout")}</button></div></div>
      </aside>`;
 }
 
@@ -115,20 +118,20 @@ function stat(label,value,foot,icon) {
 
 function overviewView() {
   const rs=entries(),approved=rs.filter(x=>x.status==="Approved"),pending=rs.filter(x=>x.status==="Pending"),alerts=activeAlerts().filter(x=>x.status==="Open"),sum=approved.reduce((a,x)=>a+core.calculate(x).sales,0);
-  const card1=stat(state.user.role==="manager"?"Approved sales":"My approved sales",rwf(sum),"<strong>↑ Demo data</strong> · Approved reports only","↗");
-  const card2=stat("Reports submitted",String(rs.length), "Across sample shifts","▤");
-  const card3=stat("Pending approvals",String(pending.length),state.user.role==="manager"?"Need your review":"Awaiting management","✓");
-  const card4=stat("Open alerts",String(alerts.length),"Sample operational notices","⚑");
+  const card1=stat(state.user.role==="manager"?"Approved sales":"My approved sales",rwf(sum),"<strong>↑ Demo data</strong> · Approved reports only",icon("trend"));
+  const card2=stat("Reports submitted",String(rs.length), "Across sample shifts",icon("file"));
+  const card3=stat("Pending approvals",String(pending.length),state.user.role==="manager"?"Need your review":"Awaiting management",icon("check"));
+  const card4=stat("Open alerts",String(alerts.length),"Sample operational notices",icon("bell"));
   const chartValues=[36,52,44,68,59,77,83];
   const bars=chartValues.map((v,i)=>`<div class="bar-col"><div class="bar ${i===6?"current":""} bar-${v}"><span class="bar-label">${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"][i]}</span></div></div>`).join("");
   const alertRows=activeAlerts().slice(0,3).map(a=>`<div class="list-row"><span class="list-icon">${a.status==="Open"?"⚑":"✓"}</span><div class="list-main"><b>${esc(a.title)}</b><small>${esc(a.age)}</small></div>${statusTag(a.status)}</div>`).join("");
   const reports=rs.slice(0,5).map(r=>`<tr><td><b>${esc(r.id)}</b></td><td>${esc(r.shift)}</td><td>${esc(r.owner)}</td><td>${dateText(r.date)}</td><td>${rwf(core.calculate(r).sales)}</td><td>${statusTag(r.status)}</td><td><button class="mini-link" data-action="details" data-id="${esc(r.id)}">View ↗</button></td></tr>`).join("");
-  return `${sectionTitle("Workspace overview","Station: "+stationName(state.station)+" · "+new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}),state.user.role==="employee"?'<button class="btn" data-action="new-report">+ New shift report</button>':'<button class="btn secondary" data-action="navigate" data-tab="approvals">Review pending approvals →</button>')}
+  return `${sectionTitle("Workspace overview","Station: "+stationName(state.station)+" · "+new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}),state.user.role==="employee"?'<button class="btn" data-action="new-report">${icon("plus")} New shift report</button>':'<button class="btn secondary" data-action="navigate" data-tab="approvals">Review pending approvals →</button>')}
    <div class="kpi-grid">${card1}${card2}${card3}${card4}</div>
    <div class="enterprise-section-heading"><div><h2>Recent activity</h2><p>Shift records from the selected station</p></div><span class="section-caption">▤ &nbsp;DATA TABLE</span></div>
    <section class="card table-card"><div class="card-header tight"><div><h2>Shift reports <span class="widget-count">${rs.length}</span></h2><p>Latest records, with review status</p></div><button class="mini-link" data-action="navigate" data-tab="reports">Open table ↗</button></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Report</th><th>Shift</th><th>Submitted by</th><th>Date</th><th>Total sales</th><th>Status</th><th></th></tr></thead><tbody>${reports||'<tr><td colspan="7">No reports</td></tr>'}</tbody></table></div></section>
    <div class="enterprise-section-heading lower-heading"><div><h2>Analytics & alerts</h2><p>Widget-based operations overview</p></div><span class="section-caption">◈ &nbsp;WIDGETS</span></div>
-   <div class="two-up"><section class="card"><div class="card-header"><div><h2>Weekly operations trend</h2><p>Illustrative activity chart · not connected to POS</p></div><span class="widget-type">▥ CHART</span></div><div class="card-body"><div class="chart" role="img" aria-label="Fictional weekly activity chart with bars for Monday through Sunday">${bars}</div><div class="chart-key"><i></i> Current period &nbsp; · &nbsp; Illustrative trends only</div></div></section>
+   <div class="two-up"><section class="card"><div class="card-header"><div><h2>Weekly operations trend</h2><p>Illustrative activity chart · not connected to POS</p></div><span class="widget-type">${icon("trend")} Chart</span></div><div class="card-body"><div class="chart" role="img" aria-label="Fictional weekly activity chart with bars for Monday through Sunday">${bars}</div><div class="chart-key"><i></i> Current period &nbsp; · &nbsp; Illustrative trends only</div></div></section>
    <section class="card"><div class="card-header"><div><h2>Actions & notifications</h2><p>Requires attention or review</p></div><button class="mini-link" data-action="navigate" data-tab="alerts">View all →</button></div><div class="card-body">${alertRows||'<div class="empty">No alerts here</div>'}</div></section></div>`;
 }
 
@@ -137,8 +140,8 @@ function reportsView() {
   const rs=entries().filter(r=>(state.filter==="All"||r.status===state.filter)&&(!q||[r.id,r.owner,r.shift,r.status,r.date,stationName(r.station)].some(v=>String(v).toLowerCase().includes(q))));
   const filters=["All","Pending","Approved","Returned"].map(f=>`<button class="filter-btn ${state.filter===f?"active":""}" data-action="filter" data-filter="${f}" aria-pressed="${state.filter===f}">${f}</button>`).join("");
   const rows=rs.map(r=>`<tr><td><b>${esc(r.id)}</b></td><td>${dateText(r.date)}</td><td>${esc(r.shift)}</td><td>${esc(r.owner)}</td><td>${rwf(core.calculate(r).sales)}</td><td>${rwf(core.calculate(r).difference)}</td><td>${statusTag(r.status)}</td><td><button class="mini-link" data-action="details" data-id="${esc(r.id)}">Details →</button>${state.user.role==="employee" && r.status==="Returned"?`<button class="btn small ghost" data-action="resubmit" data-id="${esc(r.id)}">Resubmit</button>`:""}</td></tr>`).join("");
-  return `${sectionTitle("Shift reports","Review daily close reports and their current approval state.",state.user.role==="employee"?'<button class="btn" data-action="new-report">+ Create report</button>':"")}
-  <section class="card table-card"><div class="widget-table-heading"><div><b>Shift reports</b><span>Reporting data · ${rs.length} matching records</span></div><span class="widget-type">▤ TABLE</span></div><div class="widget-toolbar"><label class="widget-search"><span aria-hidden="true">⌕</span><input id="report-search" type="search" value="${esc(state.query)}" placeholder="Search reports, names, shifts..." aria-label="Search reports"></label><button class="btn small secondary" type="button" data-action="export-csv">⇩ Export CSV</button></div><div class="filters">${filters}</div><div class="table-wrap"><table class="data-table"><thead><tr><th>Report</th><th>Date</th><th>Shift</th><th>Staff</th><th>Sales</th><th>Cash difference</th><th>Status</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="8"><div class="empty">No reports match this filter.</div></td></tr>'}</tbody></table></div></section>`;
+  return `${sectionTitle("Shift reports","Review daily close reports and their current approval state.",state.user.role==="employee"?'<button class="btn" data-action="new-report">${icon("plus")} Create report</button>':"")}
+  <section class="card table-card"><div class="widget-table-heading"><div><b>Shift reports</b><span>Reporting data · ${rs.length} matching records</span></div><span class="widget-type">${icon("file")} Table</span></div><div class="widget-toolbar"><label class="widget-search"><span aria-hidden="true">${icon("search")}</span><input id="report-search" type="search" value="${esc(state.query)}" placeholder="Search reports, names, shifts..." aria-label="Search reports"></label><button class="btn small secondary" type="button" data-action="export-csv">${icon("download")} Export CSV</button></div><div class="filters">${filters}</div><div class="table-wrap"><table class="data-table"><thead><tr><th>Report</th><th>Date</th><th>Shift</th><th>Staff</th><th>Sales</th><th>Cash difference</th><th>Status</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="8"><div class="empty">No reports match this filter.</div></td></tr>'}</tbody></table></div></section>`;
 }
 
 function approvalsView() {
@@ -178,9 +181,9 @@ function render() {
   if(!state.user){app.innerHTML=loginView();return;}
   const tabs={overview:overviewView,reports:reportsView,approvals:approvalsView,alerts:alertsView,team:teamView,settings:aboutView};
   const view=(tabs[state.tab]||overviewView)();
-  const menu=navItems().map(([id,symbol,label])=>`<button type="button" class="${state.tab===id?"active":""}" data-action="navigate" data-tab="${id}" ${state.tab===id?'aria-current="page"':""}><span>${symbol}</span>${esc(label)}</button>`).join("");
+  const menu=navItems().map(([id,symbol,label])=>`<button type="button" class="${state.tab===id?"active":""}" data-action="navigate" data-tab="${id}" ${state.tab===id?'aria-current="page"':""}><span>${uiIcon(symbol)}</span>${esc(label)}</button>`).join("");
   const select=state.user.role==="manager"?`<select class="select station" id="station-select" aria-label="Select station">${stations.map(s=>`<option value="${esc(s.id)}" ${s.id===state.station?"selected":""}>${esc(s.name)}</option>`).join("")}</select>`:`<span class="select station station-text">${esc(stationName(state.station))}</span>`;
-  app.innerHTML=`<div class="app-shell workspace-shell">${sidebarView()}<div class="main-area"><header class="topbar"><div class="top-title"><span class="workspace-icon">▦</span><span class="top-trail">StationDesk <span class="crumb-slash">/</span></span><strong>${esc((navItems().find(x=>x[0]===state.tab)||navItems()[0])[2])}</strong><small class="widget-environment">◉ Preview</small></div><div class="top-actions"><span class="today-stamp">${new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}</span>${select}<span class="top-role">${esc(state.user.name.split(" ").map(n=>n[0]).join(""))}</span></div></header><main class="content"><div class="demo-banner"><b>● LIVE PREVIEW</b> &nbsp; You are exploring a sample workspace — fictional data, simulated login, no ERPNext connection.</div>${view}<div class="footer-note">StationDesk · Demo workspace · No real company data or live backend.</div></main><nav class="mobile-bar" aria-label="Mobile menu">${menu}</nav></div></div>${modalView()}${state.toast?`<div class="toast" role="status">✓ ${esc(state.toast)} <button class="btn small ghost" data-action="dismiss">×</button></div>`:""}`;
+  app.innerHTML=`<div class="app-shell workspace-shell">${sidebarView()}<div class="main-area"><header class="topbar"><div class="top-title"><span class="workspace-icon">${icon("grid")}</span><span class="top-trail">StationDesk <span class="crumb-slash">/</span></span><strong>${esc((navItems().find(x=>x[0]===state.tab)||navItems()[0])[2])}</strong><small class="widget-environment">Preview</small></div><div class="top-actions"><span class="today-stamp">${new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}</span>${select}<span class="top-role">${esc(state.user.name.split(" ").map(n=>n[0]).join(""))}</span></div></header><main class="content"><div class="demo-banner"><b>Preview</b> &nbsp; You are exploring a sample workspace — fictional data, simulated login, no ERPNext connection.</div>${view}<div class="footer-note">StationDesk · Demo workspace · No real company data or live backend.</div></main><nav class="mobile-bar" aria-label="Mobile menu">${menu}</nav></div></div>${modalView()}${state.toast?`<div class="toast" role="status">✓ ${esc(state.toast)} <button class="btn small ghost" data-action="dismiss">×</button></div>`:""}`;
 }
 
 function notify(message) {state.toast=message;render();}

@@ -26,14 +26,26 @@ This demo is NOT the actual ERPNext system. Role permissions and sign-in are sim
 
 The sample station team and report authors use the names of Manchester City footballers for fun. These are **fictional staff assignments**: no real player works at these stations, and this demo is not affiliated with or endorsed by Manchester City FC. No real employee or footballer information is collected.
 
-## Selected frontend design — Appsmith-inspired workspace
+## Selected frontend — Appsmith ADS-inspired components
 
-The only published frontend is a standalone **StationDesk** demo, visually inspired by the light canvas, widgets, navigation and tables common in Appsmith-built internal tools. It does **not use Appsmith's platform** and is not affiliated with Appsmith.
+StationDesk is an independent static HTML/CSS/JavaScript demonstration inspired by the **Appsmith Design System (ADS)**. It is not built with Appsmith, does not import their component library, and is not affiliated with or endorsed by Appsmith. Sample sign-in and all data are simulated.
 
-- Purple page navigation, charcoal app bar and orange primary actions
-- Dashboard stat, chart and alert widgets, compact table views
-- Search and CSV export in Daily reports (fictional records only)
-- Simulated Manager / Employee login and existing demo workflows
-- Styles in `workspace.css`, source interactions in `app.js`, shared pure calculations in `core.js`
+The UI follows the documented ADS conventions, including:
 
-The main `index.html` loads `styles.css` then `workspace.css`. Only one design is shipped.
+- System typography (SF Pro / Segoe UI / Ubuntu according to operating system, with PT Root UI only if already installed) and 12–14px application text
+- Base spacing scale of 2, 4, 8, 12, 16, 20 and 24px
+- 36px medium and 24px small buttons; primary / secondary / tertiary treatments, 6px rounding
+- 36px medium input and select controls with readable labels, focus outlines and neutral borders
+- White and gray workspace surfaces, semantic status colors and official ADS-inspired orange action accent
+- Unified line icons (locally rendered SVG), navigation, tables, filters, inputs, dialogs and toast notifications
+- Sample CSV export and search for daily reports; simulated reports/approvals/team/alerts
+
+The site uses `styles.css` for structural layout and `workspace.css` for the full ADS-inspired visual system.
+
+Official public design-system references:
+- https://github.com/appsmithorg/design-system/blob/release/packages/design-system/src/Documentation/Typography.mdx
+- https://github.com/appsmithorg/design-system/blob/release/packages/design-system/src/Button/Button.styles.tsx
+- https://github.com/appsmithorg/design-system/blob/release/packages/design-system/src/Input/Input.styles.tsx
+- https://github.com/appsmithorg/design-system/blob/release/packages/design-system/src/__theme__/default/colors.css
+
+Appsmith's newer typography theme imports PT Root UI, but this demo **does not bundle or redistribute font files**; it uses a resilient system-font fallback.
