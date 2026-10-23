@@ -45,3 +45,14 @@ test("login uses the full Lottie player for the uploaded masked artwork",()=>{
   assert.match(js,/id="pump-lottie-canvas"/);
   assert.match(js,/animateUploadedPump\(\)/);
 });
+
+test("hero typography matches the enterprise workspace font without changing pump animation",()=>{
+  const css=fs.readFileSync(path.join(root,"login-portal.css"),"utf8");
+  const workspace=fs.readFileSync(path.join(root,"workspace.css"),"utf8");
+  assert.match(workspace,/font-family:"PT Root UI",-apple-system/);
+  assert.match(css,/font-family:"PT Root UI",-apple-system/);
+  assert.match(css,/\.station-portal \.login-message \.eyebrow[\s\S]*?text-transform:none/);
+  assert.match(css,/\.station-portal \.login-message h1[\s\S]*?font-weight:650/);
+  assert.match(css,/\.station-portal \.login-message p[\s\S]*?font-size:14px/);
+  assert.match(css,/\.station-portal \.fuel-demo/);
+});
