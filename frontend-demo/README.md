@@ -26,49 +26,28 @@ This demo is NOT the actual ERPNext system. Role permissions and sign-in are sim
 
 The sample station team and report authors use the names of Manchester City footballers for fun. These are **fictional staff assignments**: no real player works at these stations, and this demo is not affiliated with or endorsed by Manchester City FC. No real employee or footballer information is collected.
 
-## Selected frontend — Appsmith ADS-inspired components
+## StationDesk design — Taste-inspired forecourt ledger
 
-StationDesk is an independent static HTML/CSS/JavaScript demonstration inspired by the **Appsmith Design System (ADS)**. It is not built with Appsmith, does not import their component library, and is not affiliated with or endorsed by Appsmith. Sample sign-in and all data are simulated.
+StationDesk has its own visual identity, replacing the earlier Appsmith-style look. The redesign was **informed by** the practical app-screen rules in [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill), especially quiet data surfaces, precise type hierarchy, meaningful action placement, honest figures and a phone-friendly work area. It is an original StationDesk adaptation, not an installation or automated browser-verified execution of Taste Skill.
 
-The UI follows the documented ADS conventions, including:
+The visual direction takes its palette from the station forecourt: deep petrol green, paper-like ivory, restrained green data emphasis and warm amber for attention. The design system lives in `taste-redesign.css`, loaded after the existing structural and mobile styles, so existing reporting, approval, demo accounts and mobile interactions continue to work.
 
-- System typography in the dashboard (SF Pro / Segoe UI / Ubuntu fallbacks according to operating system), plus actual self-hosted Appsmith PT Root UI typography on the login page
-- Base spacing scale of 2, 4, 8, 12, 16, 20 and 24px
-- 36px medium and 24px small buttons; primary / secondary / tertiary treatments, 6px rounding
-- 36px medium input and select controls with readable labels, focus outlines and neutral borders
-- Professional white and slate-gray workspace surfaces with custom corporate blue (`#2563eb`) primary actions, navy header, and green / amber / red reserved for statuses
-- Unified line icons (locally rendered SVG), navigation, tables, filters, inputs, dialogs and toast notifications
-- Sample CSV export and search for daily reports; simulated reports/approvals/team/alerts
+- Bespoke station pump mark, dark petrol sidebar, warm light workspace, responsive typography and calmer data tables.
+- An **action-first shift handover** strip derived from existing pending reports and open alerts, with a working review or new-report button.
+- Clear RWF figures and role-specific actions, with statuses coloured only where they carry meaning.
+- Floating mobile navigation, responsive report cards, usable form fields and safe-area spacing.
+- The existing uploaded fuel-pump Lottie remains the only animated login artwork; its keyframes are unchanged.
 
-The site uses `styles.css` for structural layout and `workspace.css` for the full ADS-inspired visual system.
+The former Appsmith-inspired `workspace.css` and typography remain as compatibility/base layers but are intentionally visually overridden by `taste-redesign.css`. The demo is still not an Appsmith app and no Appsmith components or brands are embedded.
 
-Official public design-system references:
-- https://github.com/appsmithorg/design-system/blob/release/packages/design-system/src/Documentation/Typography.mdx
-- https://github.com/appsmithorg/design-system/blob/release/packages/design-system/src/Button/Button.styles.tsx
-- https://github.com/appsmithorg/design-system/blob/release/packages/design-system/src/Input/Input.styles.tsx
-- https://github.com/appsmithorg/design-system/blob/release/packages/design-system/src/__theme__/default/colors.css
+## StationDesk login — forecourt editorial layout with the uploaded Lottie animation
 
-Appsmith's newer design-system typography imports **PT Root UI**. The StationDesk login now loads the **actual PT Root UI VF** typeface through a locally hosted WOFF2 file, sourced from the original publisher [Paratype](https://github.com/paratype-fonts/free/tree/master/PT-Root-UI-VF). It is permitted under the **SIL Open Font License 1.1**; the license is included at `fonts/OFL.txt`. The rest of the application retains system-font fallbacks. No Appsmith branding or design assets are redistributed.
-
-## Corporate color palette
-
-The live StationDesk demo uses a custom **blue and white** business theme while preserving the ADS-inspired component sizes, spacing and fonts. Blue is intentionally different from Appsmith's own orange brand color.
-
-- Primary buttons, active navigation and links: `#2563eb` (hover `#1d4ed8`)
-- Workspace header: `#142b49` navy
-- Page background: `#f4f7fb`, cards / input fields: white
-- Report status colors: green (approved), amber (pending), red (returned / danger)
-
-Only presentation changed; sample users, data, roles, reports and the API-disconnected demo remain as before.
-
-## Selected login page — premium station portal with the uploaded Lottie animation
-
-The public login page follows **Option C: Premium Station Portal** and now uses the exact artwork and keyframes from the user's uploaded `fuel-pump.json`. It shows an original vector forecourt background, navy overlay, and floating white demo sign-in card.
+The login presents a bespoke dark-petrol welcome with a warm paper sign-in form and keeps the exact artwork and keyframes from the user's uploaded `fuel-pump.json`.
 
 - **Real asset:** `fuel-pump-original.json` is a byte-for-byte copy of the supplied animation (`Gas_station_Final_Comp`, 1920×1080, 25 frames/second, 150 frames, 6 seconds). It is not the former placeholder pump.
 - **Playback asset:** `fuel-pump-lottie.json` retains its visual paths, precompositions, timing and animation keyframes. For safer embedded playback, 86 After Effects expression-script snippets were removed; their default colors/values are retained. This avoids running arbitrary expressions received in uploaded content.
 - **Lottie renderer:** pinned official `lottie-web` **full** player v5.12.2 (`vendor/lottie.min.js`, MIT license in `vendor/LOTTIE_LICENSE.md`). The full renderer is necessary for the uploaded asset's track mattes and masks; the former lightweight player was removed.
-- **Playback:** the uploaded six-second fuel-pump Lottie is the **only animated element on the login screen**. It starts automatically when the page opens and repeats continuously, without hover, click, tap, or extra controls. The original animation is shown at up to 390px wide on desktop (responsive on mobile), with no percentage gauge, progress bar, extra cards or other animations.
+- **Playback:** the uploaded six-second fuel-pump Lottie is the **only animated element on the login screen**. It starts automatically when the page opens and repeats continuously, without hover, click, tap, or extra controls. The original animation is shown at up to 420px wide on desktop (responsive on mobile), with no percentage gauge, progress bar, extra cards or other animations.
 - **Accessibility:** there is nothing to click or tap to activate the illustration. The `prefers-reduced-motion` preference freezes it at its final frame.
 - **Privacy:** the Lottie player and JSON are hosted locally alongside the static demo. No third-party scripts or network calls for animation are needed.
 - **Scope:** public demo accounts, password toggle, reports, approvals and team names are unchanged. This is not real authentication or an ERPNext integration.
