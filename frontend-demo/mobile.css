@@ -1,0 +1,378 @@
+/* StationDesk mobile-first refinement.
+   Keeps the ADS-inspired design and the uploaded fuel-pump Lottie intact.
+   No decorative UI animations are introduced. */
+
+.mobile-report-list,
+.mobile-more-backdrop,
+.mobile-more-sheet { display:none; }
+
+@media (max-width:810px) {
+  /* One compact, branded hero instead of a full-screen illustration above login. */
+  .login-shell.station-portal {
+    display:block;
+    min-height:100svh;
+    overflow-x:clip;
+    background:#fff;
+  }
+  .login-shell.station-portal::before { display:none; }
+  .station-portal .login-hero {
+    display:block;
+    min-height:0;
+    height:auto;
+    padding:18px 22px 35px;
+    background:
+      linear-gradient(115deg,rgba(7,28,53,.96),rgba(14,51,91,.83)),
+      url("./forecourt-scene.svg") center 55%/cover no-repeat;
+  }
+  .station-portal .brand { font-size:20px; gap:9px; }
+  .station-portal .brand-mark { width:36px;height:36px;flex-basis:36px;border-radius:9px; }
+  .station-portal .brand-subtitle { font-size:9px;margin-top:3px;letter-spacing:.08em; }
+  .station-portal .login-message {
+    margin:19px 0 0;
+    padding:0;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(108px,138px);
+    grid-template-areas:"eyebrow pump" "headline pump" "summary summary";
+    column-gap:12px;
+    row-gap:3px;
+    align-items:center;
+    max-width:none;
+  }
+  .station-portal .login-message .eyebrow {
+    grid-area:eyebrow;
+    min-width:0;
+    margin:0 0 4px;
+    font-size:11px;
+  }
+  .station-portal .login-message .eyebrow::before {
+    width:17px;height:2px;flex:0 0 17px;
+  }
+  .station-portal .login-message h1 {
+    grid-area:headline;
+    font-size:clamp(27px,5.3vw,37px);
+    line-height:1.13;
+    margin:0;
+    letter-spacing:-.036em;
+  }
+  .station-portal .login-message p {
+    grid-area:summary;
+    margin:10px 0 0;
+    max-width:430px;
+    font-size:12px;
+    line-height:1.55;
+    color:#d9e7f7;
+  }
+  .station-portal .fuel-demo {
+    grid-area:pump;
+    width:100%;
+    max-width:138px;
+    margin:0;
+    padding:0;
+    justify-self:end;
+    align-self:center;
+  }
+  .station-portal .hero-footer { display:none; }
+  .station-portal .login-form-side {
+    display:block;
+    padding:0;
+    background:#fff;
+    border:0;
+  }
+  .station-portal .auth-card {
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width:none;
+    margin:-17px 0 0;
+    padding:24px 22px max(30px,env(safe-area-inset-bottom));
+    background:#fff;
+    border:0;
+    border-radius:19px 19px 0 0;
+    box-shadow:none;
+  }
+  .station-portal .auth-card .pill { display:none; }
+  .station-portal .auth-card h2 { font-size:27px;margin-bottom:5px;letter-spacing:-.035em; }
+  .station-portal .auth-card .subcopy { font-size:13px;margin-bottom:16px; }
+  .station-portal .role-switch { margin-bottom:16px;padding:4px; }
+  .station-portal .role-switch button { min-height:40px; }
+  .station-portal .field { margin-bottom:14px; }
+  .station-portal .field>span { margin-bottom:6px; }
+  .station-portal .field>input,.station-portal .login-password input {
+    min-height:46px;height:46px;font-size:16px;
+  }
+  .station-portal .password-toggle { font-size:12px; }
+  .station-portal .auth-card .btn.wide { min-height:48px;font-size:14px;margin-top:3px; }
+  .station-portal .auth-card .auth-hint {
+    margin:16px 0 11px;
+    padding:10px 12px;
+    font-size:11px;
+    line-height:1.65;
+  }
+  .station-portal .auth-card .auth-notice { font-size:11px; }
+}
+
+/* 320px-760px phone dashboard: accessible navigation and scan-friendly data. */
+@media (max-width:760px) {
+  .workspace-shell .main-area { min-height:100dvh; }
+  .workspace-shell .topbar {
+    position:sticky;
+    top:0;
+    height:54px;
+    gap:9px;
+    padding:0 max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left));
+    background:#142b49;
+  }
+  .workspace-shell .top-title { min-width:0;gap:6px; }
+  .workspace-shell .top-title strong {
+    display:block;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:12px;
+    max-width:150px;
+  }
+  .workspace-shell .workspace-icon { width:25px;height:25px;flex:0 0 25px;margin-right:2px; }
+  .workspace-shell .top-actions { flex:0 0 auto;min-width:0; }
+  .workspace-shell .select.station {
+    min-width:0;
+    width:clamp(112px,33vw,155px);
+    max-width:155px;
+    min-height:34px;
+    font-size:12px;
+    padding:4px 6px;
+  }
+  .workspace-shell .content {
+    padding:18px 14px calc(92px + env(safe-area-inset-bottom)) !important;
+  }
+  .workspace-shell .demo-banner {
+    margin-bottom:19px;
+    padding:9px 11px;
+    border-radius:6px;
+    font-size:11px;
+  }
+  .workspace-shell .page-heading { margin-bottom:17px; }
+  .workspace-shell .page-heading h1 { font-size:23px;line-height:1.2;letter-spacing:-.025em; }
+  .workspace-shell .page-heading p { font-size:12px;line-height:1.5; }
+  .workspace-shell .page-actions { width:100%; }
+  .workspace-shell .page-actions .btn {
+    display:flex;width:100%;min-height:42px;justify-content:center;font-size:13px;
+  }
+  .workspace-shell .kpi-grid {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    align-items:stretch;
+    gap:10px;
+    margin-bottom:23px;
+  }
+  .workspace-shell .kpi {
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    min-width:0;
+    min-height:110px;
+    padding:13px 12px;
+    background:#fff;
+    border-radius:9px;
+  }
+  .workspace-shell .kpi-label {
+    display:flex;
+    align-items:flex-start;
+    gap:6px;
+    min-height:29px;
+    margin:0 0 11px;
+    font-size:11px;
+    line-height:1.3;
+  }
+  .workspace-shell .kpi-icon { width:25px;height:25px;flex:0 0 25px; }
+  .workspace-shell .kpi-value {
+    font-size:clamp(17px,4.6vw,21px);
+    line-height:1.16;
+    letter-spacing:-.035em;
+    overflow-wrap:anywhere;
+  }
+  .workspace-shell .kpi-foot { font-size:10px;margin-top:8px;line-height:1.35; }
+  .workspace-shell .enterprise-section-heading { margin-bottom:10px; }
+  .workspace-shell .enterprise-section-heading h2 { font-size:16px; }
+  .workspace-shell .enterprise-section-heading p { font-size:11px; }
+  .workspace-shell .enterprise-section-heading.lower-heading { margin-top:24px; }
+  .workspace-shell .card-header { padding:15px 15px 0; }
+  .workspace-shell .card-header.tight { padding-bottom:13px; }
+  .workspace-shell .card-header h2 { font-size:14px; }
+  .workspace-shell .mini-link {
+    display:inline-flex;align-items:center;
+    white-space:nowrap;
+    flex:0 0 auto;
+    font-size:11px;
+    min-height:36px;
+  }
+  .workspace-shell .table-card { overflow:visible; }
+  .workspace-shell .table-card .table-wrap { display:none; }
+  .workspace-shell .mobile-report-list { display:block;border-top:1px solid #e3e8ef; }
+  .workspace-shell .mobile-report-card {
+    display:grid;
+    gap:11px;
+    padding:16px 15px;
+    border-bottom:1px solid #e3e8ef;
+    background:#fff;
+    min-width:0;
+  }
+  .workspace-shell .mobile-report-card:last-child { border-bottom:0;border-radius:0 0 9px 9px; }
+  .workspace-shell .mobile-report-top {
+    display:flex;align-items:flex-start;justify-content:space-between;gap:8px;min-width:0;
+  }
+  .workspace-shell .mobile-report-top > div { display:grid;gap:3px;min-width:0; }
+  .workspace-shell .mobile-report-top strong { font-size:13px;font-weight:650;color:#202939; }
+  .workspace-shell .mobile-report-top span:not(.status) { font-size:11px;color:#6a7585; }
+  .workspace-shell .mobile-report-top .status { flex:0 0 auto; }
+  .workspace-shell .mobile-report-person { font-size:12px;color:#4c5664;overflow-wrap:anywhere; }
+  .workspace-shell .mobile-report-numbers { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+  .workspace-shell .mobile-report-numbers > div { min-width:0;display:grid;gap:3px; }
+  .workspace-shell .mobile-report-numbers small { color:#6a7585;font-size:10px; }
+  .workspace-shell .mobile-report-numbers b {
+    font-size:13px;font-weight:600;color:#202939;
+    font-variant-numeric:tabular-nums;
+    overflow-wrap:anywhere;
+  }
+  .workspace-shell .mobile-report-actions {
+    display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;
+    padding-top:2px;
+  }
+  .workspace-shell .mobile-report-actions .btn { min-height:36px; }
+  .workspace-shell .mobile-report-actions .ui-icon { transform:rotate(-90deg); }
+  .workspace-shell .widget-toolbar { padding:12px; }
+  .workspace-shell .widget-search { height:42px; }
+  .workspace-shell .widget-search input { min-height:38px; }
+  .workspace-shell .filters {
+    display:flex;overflow-x:auto;flex-wrap:nowrap;
+    overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    gap:7px;
+    padding:10px 12px;
+  }
+  .workspace-shell .filters::-webkit-scrollbar { display:none; }
+  .workspace-shell .filter-btn { flex:0 0 auto;min-height:36px;padding:7px 13px;border-radius:6px; }
+  .workspace-shell .two-up { display:grid;grid-template-columns:1fr;gap:12px; }
+  .workspace-shell .card-body { padding:14px 15px 18px; }
+  .workspace-shell .chart { height:185px;gap:7px; }
+  .workspace-shell .bar-col { min-width:18px; }
+  .workspace-shell .review-grid,.workspace-shell .team-grid { grid-template-columns:1fr;gap:11px; }
+  .workspace-shell .review-card { padding:17px; }
+  .workspace-shell .review-amount { font-size:21px; }
+  .workspace-shell .review-actions .btn { min-height:44px; }
+  .workspace-shell .alert-feed { gap:10px; }
+  .workspace-shell .alert-card { display:flex;align-items:flex-start;flex-wrap:wrap;padding:15px;gap:10px; }
+  .workspace-shell .alert-card .list-icon { width:32px;height:32px;flex-basis:32px; }
+  .workspace-shell .alert-card .list-main { flex:1 1 calc(100% - 44px);min-width:0; }
+  .workspace-shell .alert-card .status { margin-left:42px; }
+  .workspace-shell .alert-card > .btn { margin:0 0 0 auto;min-height:36px; }
+  .workspace-shell .team-member { align-items:flex-start; }
+  .workspace-shell .team-member .avatar { flex-shrink:0; }
+  .workspace-shell .info-card { padding:18px; }
+  .workspace-shell .kv { align-items:flex-start; }
+  .workspace-shell .kv b { max-width:60%; }
+  .modal-overlay { padding:9px; }
+  .modal-panel {
+    max-height:calc(100dvh - 18px);
+    padding:20px 17px max(20px,env(safe-area-inset-bottom));
+    border-radius:14px;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+  .modal-panel .modal-grid { grid-template-columns:1fr; }
+  .modal-panel .field input,.modal-panel .field select,.modal-panel .field textarea { min-height:45px; }
+  .modal-panel .modal-controls .btn { min-height:44px; }
+  .toast {
+    right:12px;left:12px;bottom:calc(80px + env(safe-area-inset-bottom));
+    max-width:none;
+    padding:12px 14px;
+  }
+  /* Fixed, always-available four-to-five item tab bar. No sideways-scrolling labels. */
+  .workspace-shell .mobile-bar {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(0,1fr));
+    position:fixed;
+    left:0;right:0;bottom:0;z-index:30;
+    overflow:visible;
+    gap:2px;
+    padding:7px max(7px,env(safe-area-inset-right)) max(7px,env(safe-area-inset-bottom)) max(7px,env(safe-area-inset-left));
+    background:rgba(255,255,255,.98);
+    border-top:1px solid #d9e2ed;
+    box-shadow:0 -4px 18px rgba(13,41,80,.055);
+  }
+  .workspace-shell .mobile-bar button {
+    min-width:0;min-height:48px;
+    padding:5px 2px;
+    display:flex;flex-direction:column;
+    gap:3px;
+    align-items:center;justify-content:center;
+    border-radius:8px;
+    text-align:center;
+    font-size:10px;
+    font-weight:550;
+    line-height:1.15;
+    color:#6a7585;
+    white-space:nowrap;
+  }
+  .workspace-shell .mobile-bar button > span { display:block; }
+  .workspace-shell .mobile-bar button > span:first-child { width:20px;height:20px;display:grid;place-items:center; }
+  .workspace-shell .mobile-bar button .ui-icon { width:20px;height:20px; }
+  .workspace-shell .mobile-bar button.active { background:#eef5ff;color:#1d4ed8;font-weight:650; }
+  .workspace-shell .mobile-bar button:focus-visible { outline-offset:-3px; }
+  .mobile-more-backdrop {
+    display:block;position:fixed;inset:0;z-index:24;
+    background:rgba(8,25,48,.47);
+  }
+  .mobile-more-sheet {
+    display:block;
+    position:fixed;
+    left:12px;right:12px;
+    bottom:calc(74px + env(safe-area-inset-bottom));
+    z-index:27;
+    max-height:calc(100dvh - 115px);
+    overflow-y:auto;
+    background:#fff;
+    border:1px solid #d8e2ef;
+    border-radius:16px;
+    padding:15px;
+    box-shadow:0 18px 48px rgba(5,24,50,.24);
+    overscroll-behavior:contain;
+  }
+  .mobile-more-heading { display:flex;align-items:center;justify-content:space-between;margin-bottom:7px; }
+  .mobile-more-heading b { font-size:15px;color:#202939;font-weight:650; }
+  .mobile-more-dismiss {
+    width:35px;height:35px;border:0;border-radius:8px;background:#eef2f7;
+    color:#344054;font-size:22px;cursor:pointer;
+  }
+  .mobile-more-content { display:grid;gap:6px; }
+  .mobile-more-link {
+    display:flex;align-items:center;gap:11px;
+    width:100%;min-height:51px;
+    border:1px solid #e3e8ef;
+    border-radius:9px;
+    background:#fff;color:#202939;
+    font-size:13px;text-align:left;padding:10px 12px;
+  }
+  .mobile-more-link span { flex:1;overflow-wrap:anywhere; }
+  .mobile-more-link > .ui-icon:last-child { transform:rotate(-90deg);color:#8a95a5; }
+  .mobile-more-link:active { background:#f1f5f9; }
+}
+@media (max-width:380px) {
+  .station-portal .login-hero { padding:16px 17px 33px; }
+  .station-portal .login-message {
+    grid-template-columns:minmax(0,1fr) 108px;
+    column-gap:7px;
+  }
+  .station-portal .login-message .eyebrow { font-size:10px;gap:6px; }
+  .station-portal .login-message h1 { font-size:28px; }
+  .station-portal .fuel-demo { max-width:108px; }
+  .station-portal .auth-card { padding:22px 17px 28px; }
+  .workspace-shell .content { padding-left:12px!important;padding-right:12px!important; }
+  .workspace-shell .kpi-value { font-size:17px; }
+  .workspace-shell .mobile-bar button { font-size:9px; }
+  .workspace-shell .top-title strong { max-width:112px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .mobile-more-sheet,.mobile-more-backdrop,.mobile-report-card { transition:none!important;animation:none!important; }
+}
