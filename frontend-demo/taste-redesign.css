@@ -476,3 +476,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 @media (prefers-reduced-motion:reduce) {
   .workspace-shell *, .modal-panel *, .mobile-more-sheet * { scroll-behavior:auto;transition:none!important; }
 }
+
+/* Deliberately replace the old Appsmith-associated hero type treatment. */
+.station-portal .login-message { font-family:"Avenir Next",Avenir,"Segoe UI",Arial,sans-serif; }
