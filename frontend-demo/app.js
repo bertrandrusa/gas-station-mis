@@ -9,7 +9,7 @@ const stations = [
 ];
 const core = window.StationDemoCore;
 const state = {
-  user:null, loginRole:"manager", error:"", tab:"overview", station:"central", filter:"All", query:"",
+  user:null, loginRole:"manager", error:"", tab:"overview", station:"central", filter:"All", query:"", mobileMore:false,
   modal:null, toast:"", reports:seedReports(), alerts:seedAlerts()
 };
 
@@ -121,6 +121,19 @@ function stat(label,value,foot,icon) {
   return `<div class="card kpi"><div class="kpi-label">${esc(label)}<span class="kpi-icon">${icon}</span></div><div class="kpi-value">${esc(value)}</div><div class="kpi-foot">${foot}</div></div>`;
 }
 
+// On compact screens, show actionable summaries rather than a wide, scrolling table.
+function mobileReportCard(r) {
+  const values=core.calculate(r);
+  const resubmit=state.user.role==="employee" && r.status==="Returned"
+    ? '<button class="btn small secondary" type="button" data-action="resubmit" data-id="'+esc(r.id)+'">Resubmit</button>' : "";
+  return '<article class="mobile-report-card">'
+    + '<div class="mobile-report-top"><div><strong>'+esc(r.id)+'</strong><span>'+esc(r.shift)+' shift · '+dateText(r.date)+'</span></div>'+statusTag(r.status)+'</div>'
+    + '<div class="mobile-report-person">'+esc(r.owner)+'</div>'
+    + '<div class="mobile-report-numbers"><div><small>Sales</small><b>'+rwf(values.sales)+'</b></div><div><small>Cash difference</small><b>'+rwf(values.difference)+'</b></div></div>'
+    + '<div class="mobile-report-actions"><button class="btn small secondary" type="button" data-action="details" data-id="'+esc(r.id)+'">View details '+icon("down")+'</button>'+resubmit+'</div>'
+    + '</article>';
+}
+
 function overviewView() {
   const rs=entries(),approved=rs.filter(x=>x.status==="Approved"),pending=rs.filter(x=>x.status==="Pending"),alerts=activeAlerts().filter(x=>x.status==="Open"),sum=approved.reduce((a,x)=>a+core.calculate(x).sales,0);
   const card1=stat(state.user.role==="manager"?"Approved sales":"My approved sales",rwf(sum),"<strong>↑ Demo data</strong> · Approved reports only",icon("trend"));
@@ -130,11 +143,12 @@ function overviewView() {
   const chartValues=[36,52,44,68,59,77,83];
   const bars=chartValues.map((v,i)=>`<div class="bar-col"><div class="bar ${i===6?"current":""} bar-${v}"><span class="bar-label">${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"][i]}</span></div></div>`).join("");
   const alertRows=activeAlerts().slice(0,3).map(a=>`<div class="list-row"><span class="list-icon">${a.status==="Open"?"⚑":"✓"}</span><div class="list-main"><b>${esc(a.title)}</b><small>${esc(a.age)}</small></div>${statusTag(a.status)}</div>`).join("");
+  const mobileReports=rs.slice(0,5).map(mobileReportCard).join("");
   const reports=rs.slice(0,5).map(r=>`<tr><td><b>${esc(r.id)}</b></td><td>${esc(r.shift)}</td><td>${esc(r.owner)}</td><td>${dateText(r.date)}</td><td>${rwf(core.calculate(r).sales)}</td><td>${statusTag(r.status)}</td><td><button class="mini-link" data-action="details" data-id="${esc(r.id)}">View ↗</button></td></tr>`).join("");
   return `${sectionTitle("Workspace overview","Station: "+stationName(state.station)+" · "+new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}),state.user.role==="employee"?'<button class="btn" data-action="new-report">${icon("plus")} New shift report</button>':'<button class="btn secondary" data-action="navigate" data-tab="approvals">Review pending approvals →</button>')}
    <div class="kpi-grid">${card1}${card2}${card3}${card4}</div>
    <div class="enterprise-section-heading"><div><h2>Recent activity</h2><p>Shift records from the selected station</p></div><span class="section-caption">▤ &nbsp;DATA TABLE</span></div>
-   <section class="card table-card"><div class="card-header tight"><div><h2>Shift reports <span class="widget-count">${rs.length}</span></h2><p>Latest records, with review status</p></div><button class="mini-link" data-action="navigate" data-tab="reports">Open table ↗</button></div><div class="table-wrap" role="region" tabindex="0" aria-label="Scrollable shift reports table"><table class="data-table"><thead><tr><th>Report</th><th>Shift</th><th>Submitted by</th><th>Date</th><th>Total sales</th><th>Status</th><th></th></tr></thead><tbody>${reports||'<tr><td colspan="7">No reports</td></tr>'}</tbody></table></div></section>
+   <section class="card table-card"><div class="card-header tight"><div><h2>Shift reports <span class="widget-count">${rs.length}</span></h2><p>Latest records, with review status</p></div><button class="mini-link" data-action="navigate" data-tab="reports">Open table ↗</button></div><div class="table-wrap" role="region" tabindex="0" aria-label="Scrollable shift reports table"><table class="data-table"><thead><tr><th>Report</th><th>Shift</th><th>Submitted by</th><th>Date</th><th>Total sales</th><th>Status</th><th></th></tr></thead><tbody>${reports||'<tr><td colspan="7">No reports</td></tr>'}</tbody></table></div><div class="mobile-report-list">${mobileReports||'<div class="empty">No reports to show.</div>'}</div></section>
    <div class="enterprise-section-heading lower-heading"><div><h2>Analytics & alerts</h2><p>Widget-based operations overview</p></div><span class="section-caption">◈ &nbsp;WIDGETS</span></div>
    <div class="two-up"><section class="card"><div class="card-header"><div><h2>Weekly operations trend</h2><p>Illustrative activity chart · not connected to POS</p></div><span class="widget-type">${icon("trend")} Chart</span></div><div class="card-body"><div class="chart" role="img" aria-label="Fictional weekly activity chart with bars for Monday through Sunday">${bars}</div><div class="chart-key"><i></i> Current period &nbsp; · &nbsp; Illustrative trends only</div></div></section>
    <section class="card"><div class="card-header"><div><h2>Actions & notifications</h2><p>Requires attention or review</p></div><button class="mini-link" data-action="navigate" data-tab="alerts">View all →</button></div><div class="card-body">${alertRows||'<div class="empty">No alerts here</div>'}</div></section></div>`;
@@ -144,9 +158,10 @@ function reportsView() {
   const q=state.query.trim().toLowerCase();
   const rs=entries().filter(r=>(state.filter==="All"||r.status===state.filter)&&(!q||[r.id,r.owner,r.shift,r.status,r.date,stationName(r.station)].some(v=>String(v).toLowerCase().includes(q))));
   const filters=["All","Pending","Approved","Returned"].map(f=>`<button class="filter-btn ${state.filter===f?"active":""}" data-action="filter" data-filter="${f}" aria-pressed="${state.filter===f}">${f}</button>`).join("");
+  const mobileRows=rs.map(mobileReportCard).join("");
   const rows=rs.map(r=>`<tr><td><b>${esc(r.id)}</b></td><td>${dateText(r.date)}</td><td>${esc(r.shift)}</td><td>${esc(r.owner)}</td><td>${rwf(core.calculate(r).sales)}</td><td>${rwf(core.calculate(r).difference)}</td><td>${statusTag(r.status)}</td><td><button class="mini-link" data-action="details" data-id="${esc(r.id)}">Details →</button>${state.user.role==="employee" && r.status==="Returned"?`<button class="btn small ghost" data-action="resubmit" data-id="${esc(r.id)}">Resubmit</button>`:""}</td></tr>`).join("");
   return `${sectionTitle("Shift reports","Review daily close reports and their current approval state.",state.user.role==="employee"?'<button class="btn" data-action="new-report">${icon("plus")} Create report</button>':"")}
-  <section class="card table-card"><div class="widget-table-heading"><div><b>Shift reports</b><span>Reporting data · ${rs.length} matching records</span></div><span class="widget-type">${icon("file")} Table</span></div><div class="widget-toolbar"><label class="widget-search"><span aria-hidden="true">${icon("search")}</span><input id="report-search" type="search" value="${esc(state.query)}" placeholder="Search reports, names, shifts..." aria-label="Search reports"></label><button class="btn small secondary" type="button" data-action="export-csv">${icon("download")} Export CSV</button></div><div class="filters">${filters}</div><div class="table-wrap" role="region" tabindex="0" aria-label="Scrollable shift reports table"><table class="data-table"><thead><tr><th>Report</th><th>Date</th><th>Shift</th><th>Staff</th><th>Sales</th><th>Cash difference</th><th>Status</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="8"><div class="empty">No reports match this filter.</div></td></tr>'}</tbody></table></div></section>`;
+  <section class="card table-card"><div class="widget-table-heading"><div><b>Shift reports</b><span>Reporting data · ${rs.length} matching records</span></div><span class="widget-type">${icon("file")} Table</span></div><div class="widget-toolbar"><label class="widget-search"><span aria-hidden="true">${icon("search")}</span><input id="report-search" type="search" value="${esc(state.query)}" placeholder="Search reports, names, shifts..." aria-label="Search reports"></label><button class="btn small secondary" type="button" data-action="export-csv">${icon("download")} Export CSV</button></div><div class="filters">${filters}</div><div class="table-wrap" role="region" tabindex="0" aria-label="Scrollable shift reports table"><table class="data-table"><thead><tr><th>Report</th><th>Date</th><th>Shift</th><th>Staff</th><th>Sales</th><th>Cash difference</th><th>Status</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="8"><div class="empty">No reports match this filter.</div></td></tr>'}</tbody></table></div><div class="mobile-report-list">${mobileRows||'<div class="empty">No reports match this filter.</div>'}</div></section>`;
 }
 
 function approvalsView() {
@@ -248,9 +263,17 @@ function render() {
   if(pumpLottie){pumpLottie.destroy();pumpLottie=null;}
   const tabs={overview:overviewView,reports:reportsView,approvals:approvalsView,alerts:alertsView,team:teamView,settings:aboutView};
   const view=(tabs[state.tab]||overviewView)();
-  const menu=navItems().map(([id,symbol,label])=>`<button type="button" class="${state.tab===id?"active":""}" data-action="navigate" data-tab="${id}" ${state.tab===id?'aria-current="page"':""}><span>${uiIcon(symbol)}</span>${esc(label)}</button>`).join("");
+  const visibleTabs=new Set(["overview","reports","approvals","alerts"]);
+  const shortNames={overview:"Home",reports:"Reports",approvals:"Approvals",alerts:"Alerts"};
+  const menu=navItems().filter(([id])=>visibleTabs.has(id))
+    .map(([id,symbol])=>`<button type="button" class="${state.tab===id?"active":""}" data-action="navigate" data-tab="${id}" ${state.tab===id?'aria-current="page"':""}><span aria-hidden="true">${uiIcon(symbol)}</span><span>${shortNames[id]}</span></button>`).join("");
+  const moreActive=state.mobileMore||["team","settings"].includes(state.tab);
+  const moreButton=`<button type="button" class="${moreActive?"active":""}" data-action="mobile-more" aria-haspopup="dialog" aria-expanded="${state.mobileMore}"><span aria-hidden="true">${icon("gear")}</span><span>More</span></button>`;
+  const extraLinks=navItems().filter(([id])=>!visibleTabs.has(id))
+    .map(([id,symbol,label])=>`<button type="button" class="mobile-more-link" data-action="navigate" data-tab="${id}">${icon(symbol)} <span>${esc(label)}</span> ${icon("down")}</button>`).join("");
+  const moreSheet=state.mobileMore?`<div class="mobile-more-backdrop" data-action="mobile-more-close"></div><section class="mobile-more-sheet" role="dialog" aria-modal="true" aria-label="More station options"><div class="mobile-more-heading"><b>More options</b><button type="button" class="mobile-more-dismiss" data-action="mobile-more-close" aria-label="Close more options">×</button></div><div class="mobile-more-content">${extraLinks}<button type="button" class="mobile-more-link" data-action="logout">${icon("logout")} <span>Switch demo account</span> ${icon("down")}</button></div></section>`:"";
   const select=state.user.role==="manager"?`<select class="select station" id="station-select" aria-label="Select station">${stations.map(s=>`<option value="${esc(s.id)}" ${s.id===state.station?"selected":""}>${esc(s.name)}</option>`).join("")}</select>`:`<span class="select station station-text">${esc(stationName(state.station))}</span>`;
-  app.innerHTML=`<div class="app-shell workspace-shell">${sidebarView()}<div class="main-area"><header class="topbar"><div class="top-title"><span class="workspace-icon">${icon("grid")}</span><span class="top-trail">StationDesk <span class="crumb-slash">/</span></span><strong>${esc((navItems().find(x=>x[0]===state.tab)||navItems()[0])[2])}</strong><small class="widget-environment">Preview</small></div><div class="top-actions"><span class="today-stamp">${new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}</span>${select}<span class="top-role">${esc(state.user.name.split(" ").map(n=>n[0]).join(""))}</span></div></header><main class="content"><div class="demo-banner"><b>Preview</b> &nbsp; You are exploring a sample workspace — fictional data, simulated login, no ERPNext connection.</div>${view}<div class="footer-note">StationDesk · Demo workspace · No real company data or live backend.</div></main><nav class="mobile-bar" aria-label="Mobile menu">${menu}</nav></div></div>${modalView()}${state.toast?`<div class="toast" role="status">✓ ${esc(state.toast)} <button class="btn small ghost" data-action="dismiss">×</button></div>`:""}`;
+  app.innerHTML=`<div class="app-shell workspace-shell">${sidebarView()}<div class="main-area"><header class="topbar"><div class="top-title"><span class="workspace-icon">${icon("grid")}</span><span class="top-trail">StationDesk <span class="crumb-slash">/</span></span><strong>${esc((navItems().find(x=>x[0]===state.tab)||navItems()[0])[2])}</strong><small class="widget-environment">Preview</small></div><div class="top-actions"><span class="today-stamp">${new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}</span>${select}<span class="top-role">${esc(state.user.name.split(" ").map(n=>n[0]).join(""))}</span></div></header><main class="content"><div class="demo-banner"><b>Preview</b> &nbsp; You are exploring a sample workspace — fictional data, simulated login, no ERPNext connection.</div>${view}<div class="footer-note">StationDesk · Demo workspace · No real company data or live backend.</div></main><nav class="mobile-bar" aria-label="Mobile menu">${menu}${moreButton}</nav></div></div>${moreSheet}${modalView()}${state.toast?`<div class="toast" role="status">✓ ${esc(state.toast)} <button class="btn small ghost" data-action="dismiss">×</button></div>`:""}`;
 }
 
 function notify(message) {state.toast=message;render();}
@@ -269,10 +292,22 @@ if(action==="show-password"){
     button.setAttribute("aria-pressed",String(revealed));
     return;
   }
+  if(action==="mobile-more"){
+    state.mobileMore=!state.mobileMore;
+    render();
+    if(state.mobileMore)document.querySelector(".mobile-more-link")?.focus({preventScroll:true});
+    else document.querySelector('[data-action="mobile-more"]')?.focus({preventScroll:true});
+    return;
+  }
+  if(action==="mobile-more-close"){
+    state.mobileMore=false;render();
+    document.querySelector('[data-action="mobile-more"]')?.focus({preventScroll:true});
+    return;
+  }
   if(action==="role"){const selected=button.dataset.role;state.loginRole=selected;state.error="";render();document.querySelector('[data-action="role"][data-role="'+selected+'"]')?.focus({preventScroll:true});return;}
-  if(action==="logout"){state.user=null;state.loginRole="manager";state.tab="overview";state.error="";state.query="";state.modal=null;state.toast="";render();return;}
+  if(action==="logout"){state.mobileMore=false;state.user=null;state.loginRole="manager";state.tab="overview";state.error="";state.query="";state.modal=null;state.toast="";state.mobileMore=false;render();return;}
   if(!state.user)return;
-  if(action==="navigate"){const tab=button.dataset.tab;if(navItems().some(x=>x[0]===tab)){state.tab=tab;state.filter="All";state.query="";state.modal=null;state.toast="";render();}return;}
+  if(action==="navigate"){const tab=button.dataset.tab;if(navItems().some(x=>x[0]===tab)){state.tab=tab;state.filter="All";state.query="";state.modal=null;state.toast="";state.mobileMore=false;render();}return;}
   if(action==="export-csv"){
     const quoteCSV=value=>'"'+String(value).replace(/"/g,'""')+'"';
     const rows=entries().filter(r=>(state.filter==="All"||r.status===state.filter)&&(!state.query.trim()||[r.id,r.owner,r.shift,r.status,r.date,stationName(r.station)].some(v=>String(v).toLowerCase().includes(state.query.trim().toLowerCase()))));
@@ -346,6 +381,17 @@ function start() {
     }
   });
   document.addEventListener("keydown",event=>{
+    if(state.mobileMore && !state.modal){
+      const sheet=document.querySelector(".mobile-more-sheet");
+      if(event.key==="Escape"){event.preventDefault();state.mobileMore=false;render();document.querySelector('[data-action="mobile-more"]')?.focus();return;}
+      if(event.key==="Tab" && sheet){
+        const choices=Array.from(sheet.querySelectorAll("button:not([disabled])"));
+        const first=choices[0],last=choices[choices.length-1];
+        if(event.shiftKey && (document.activeElement===first || !sheet.contains(document.activeElement))){event.preventDefault();last?.focus();}
+        else if(!event.shiftKey && (document.activeElement===last || !sheet.contains(document.activeElement))){event.preventDefault();first?.focus();}
+      }
+      return;
+    }
     if(!state.modal)return;
     if(event.key==="Escape"){event.preventDefault();closeDialog();return;}
     if(event.key!=="Tab")return;
