@@ -479,3 +479,96 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 
 /* Deliberately replace the old Appsmith-associated hero type treatment. */
 .station-portal .login-message { font-family:"Avenir Next",Avenir,"Segoe UI",Arial,sans-serif; }
+
+
+/* Login page only: blue replaces green, while the authenticated workspace retains its current palette. */
+.login-shell.station-portal {
+  --sd-ink:#19324f;
+  --sd-pine:#2563eb;
+  --sd-pine-deep:#112f5b;
+  --sd-signal:#2563eb;
+  --sd-tint:#e8f1ff;
+  --sd-paper:#f5f7fc;
+  --sd-white:#ffffff;
+  --sd-line:#dbe4f1;
+  --sd-secondary:#64748b;
+  background:var(--sd-paper);
+}
+.login-shell.station-portal .login-hero {
+  background:#112f5b;
+  color:#f7faff;
+}
+.login-shell.station-portal .login-hero::before {
+  background:linear-gradient(125deg,transparent 18%,#317ed83d 73%,#8cbcff1f 100%);
+}
+.login-shell.station-portal .brand { color:#ffffff; }
+.login-shell.station-portal .brand-mark { background:#edf4ff;color:#153b79; }
+.login-shell.station-portal .brand-subtitle { color:#bbd2ef; }
+.login-shell.station-portal .login-message .eyebrow { color:#b6d5ff; }
+.login-shell.station-portal .login-message .eyebrow::before { background:#88baff; }
+.login-shell.station-portal .login-message h1 { color:#ffffff; }
+.login-shell.station-portal .login-message h1 em { color:#a9ceff; }
+.login-shell.station-portal .login-message p { color:#d4e4f8; }
+.login-shell.station-portal .hero-footer { color:#cee2f9; }
+.login-shell.station-portal .hero-footer .pulse { background:#85baff; }
+.login-shell.station-portal .login-form-side { background:var(--sd-paper); }
+.login-shell.station-portal .auth-card .pill {
+  background:#e7f0ff;
+  color:#275eb1;
+}
+.login-shell.station-portal .auth-card h2 { color:var(--sd-ink); }
+.login-shell.station-portal .auth-card .subcopy { color:#687d99; }
+.login-shell.station-portal .role-switch {
+  background:#e9eef8;
+  border-color:#dae3f3;
+}
+.login-shell.station-portal .role-switch button { color:#657a99; }
+.login-shell.station-portal .role-switch button.active {
+  background:#ffffff;
+  color:#1b4587;
+  box-shadow:0 1px 4px #153c7920;
+}
+.login-shell.station-portal .field>span { color:#405c81; }
+.login-shell.station-portal .field>input,
+.login-shell.station-portal .login-password input {
+  background:#ffffff;
+  border-color:#d9e3f0;
+  color:#19324f;
+}
+.login-shell.station-portal .field input:hover { border-color:#96b8e7; }
+.login-shell.station-portal .field input:focus {
+  border-color:#2563eb;
+  box-shadow:0 0 0 3px #2563eb24;
+}
+.login-shell.station-portal .password-toggle { color:#2563eb; }
+.login-shell.station-portal .auth-card .btn.wide {
+  background:#2563eb;
+  border-color:#2563eb;
+  color:#ffffff;
+}
+.login-shell.station-portal .auth-card .btn.wide:hover {
+  background:#1d4ed8;
+  border-color:#1d4ed8;
+}
+.login-shell.station-portal .auth-card .auth-hint {
+  background:#eaf1fd;
+  border-color:#d7e5fa;
+  border-left-color:#5c95e3;
+  color:#567194;
+}
+.login-shell.station-portal .auth-card .auth-hint b { color:#234e8b; }
+.login-shell.station-portal .auth-card .auth-hint code {
+  background:#dbeafd;
+  color:#224f91;
+}
+.login-shell.station-portal .auth-card .auth-notice { color:#70829a; }
+@media (max-width:810px) {
+  .login-shell.station-portal .login-hero {
+    background:#112f5b;
+  }
+  .login-shell.station-portal .login-hero::before {
+    background:linear-gradient(105deg,transparent,#3379cd33);
+  }
+  .login-shell.station-portal .login-message p { color:#d4e4f8; }
+  .login-shell.station-portal .auth-card { background:var(--sd-paper); }
+}
